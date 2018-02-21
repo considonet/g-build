@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "removeComments": false,
+    "target": "es6",
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "pretty": true,
+    "sourceMap": true
+  },
+  "awesomeTypescriptLoaderOptions": {
+  }
+}

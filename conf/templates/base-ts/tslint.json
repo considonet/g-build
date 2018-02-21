@@ -1,0 +1,22 @@
+{
+  "extends": [
+    "tslint:recommended"
+  ],
+  "jsRules": {},
+  "rules": {
+    "comment-format": false,
+    "only-arrow-functions": false,
+    "quotemark": [true, "double", "avoid-escape"],
+    "ordered-imports": false,
+    "no-console": false,
+    "object-literal-key-quotes": false,
+    "object-literal-sort-keys": false,
+    "trailing-comma": [true, { "esSpecCompliant": true }],
+    "arrow-parens": [true, "ban-single-arg-parens"],
+    "no-trailing-whitespace": false,
+    "whitespace": [true, "check-type-operator", "check-decl"],
+    "max-line-length": [false],
+    "max-file-line-count": [false]
+  },
+  "rulesDirectory": []
+}

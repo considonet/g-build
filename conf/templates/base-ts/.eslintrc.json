@@ -1,0 +1,33 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "jasmine": true
+  },
+  "parser": "babel-eslint",
+  "extends": [
+    "xo-space/esnext"
+  ],
+  "rules": {
+    "no-trailing-spaces": "off",
+    "padded-blocks": "off",
+    "linebreak-style": "off",
+    "quote-props": "off",
+    "quotes": "off",
+    "keyword-spacing": "off",
+    "capitalized-comments": "off",
+    "space-infix-ops": "off",
+    "no-multiple-empty-lines": "off",
+    "object-curly-spacing": "off",
+    "no-warning-comments": "off",
+    "spaced-comment": "off",
+    "no-negated-condition": "off",
+    "no-alert": "off",
+    "no-multi-spaces": [
+      "error",
+      {
+        "ignoreEOLComments": true
+      }
+    ]
+  }
+}
