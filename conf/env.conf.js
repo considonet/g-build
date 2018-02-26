@@ -10,6 +10,13 @@ module.exports = {
 
   autoprefixer: {},
 
+  browsersync: {
+    spa: false,
+    port: 3000,
+    openBrowser: true,
+    urlRewrites: []
+  },
+
   logVerbosity: 1
 
 };

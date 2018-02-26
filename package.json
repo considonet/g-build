@@ -1,6 +1,6 @@
 {
   "name": "@considonet/g-build",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "GStrap Builder",
   "main": "./lib/api.js",
   "bin": {
@@ -46,7 +46,6 @@
     "gulp-filter": "^5.1.0",
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.6.4",
-    "gulp-util": "^3.0.8",
     "hard-source-webpack-plugin": "^0.5.18",
     "html-webpack-plugin": "^2.30.1",
     "json-loader": "^0.5.7",
