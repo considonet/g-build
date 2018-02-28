@@ -29,7 +29,7 @@ module.exports = () => ({
     extensions: ['.ts', '.js']
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.json$/,
         loaders: [
@@ -44,12 +44,16 @@ module.exports = () => ({
       },
       {
         test: /\.ts$/,
-        loader: 'awesome-typescript-loader',
-        options: {
-          "useBabel": true,
-          "babelOptions": babelConfig,
-          "silent": config.logVerbosity<1
-        }
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: babelConfig
+          },
+          {
+            loader: 'ts-loader'
+          }
+        ]
       },
       {
         test: /\.js$/,
