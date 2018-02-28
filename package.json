@@ -1,6 +1,6 @@
 {
   "name": "@considonet/g-build",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "GStrap Builder",
   "main": "./lib/api.js",
   "bin": {
@@ -38,7 +38,6 @@
     "eslint": "^4.17.0",
     "eslint-config-xo-space": "^0.18.0",
     "eslint-loader": "^2.0.0",
-    "extract-text-webpack-plugin": "^3.0.2",
     "get-installed-path": "^4.0.8",
     "gulp": "github:gulpjs/gulp#4ed9a4a3275559c73a396eff7e1fde3824951ebb",
     "gulp-autoprefixer": "^5.0.0",
@@ -46,8 +45,6 @@
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.6.4",
     "hard-source-webpack-plugin": "^0.6.0",
-    "html-webpack-plugin": "^2.30.1",
-    "json-loader": "^0.5.7",
     "node-sass": "4.7.2",
     "time-stamp": "^2.0.0",
     "ts-loader": "^4.0.0",

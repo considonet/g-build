@@ -31,12 +31,6 @@ module.exports = () => ({
   module: {
     rules: [
       {
-        test: /\.json$/,
-        loaders: [
-          'json-loader'
-        ]
-      },
-      {
         test: /\.ts$/,
         exclude: /node_modules/,
         loader: 'tslint-loader',
