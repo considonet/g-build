@@ -14,7 +14,8 @@ module.exports = {
     spa: false,
     port: 3000,
     openBrowser: true,
-    urlRewrites: []
+    urlRewrites: [],
+    mode: "auto"
   },
 
   logVerbosity: 1

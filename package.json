@@ -1,6 +1,6 @@
 {
   "name": "@considonet/g-build",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "GStrap Builder",
   "main": "./lib/api.js",
   "bin": {
