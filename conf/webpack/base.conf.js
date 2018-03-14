@@ -83,7 +83,7 @@ module.exports = () => ({
     const plugins = [];
     plugins.push(new ForkTsCheckerWebpackPlugin);
 
-    if(config.hardSourceCache) {
+    if(config.webpack.hardSourceCache) {
 
       plugins.push(new HardSourceWebpackPlugin({
         cacheDirectory: path.join(process.cwd(), 'node_modules/.cache/hard-source/[confighash]'),

@@ -18,6 +18,11 @@ module.exports = {
     mode: "auto"
   },
 
+  webpack: {
+    hardSourceCache: false,
+    enableBundleAnalyzerServer: true
+  },
+
   logVerbosity: 1
 
 };
