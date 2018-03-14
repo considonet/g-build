@@ -3,6 +3,7 @@ const config = require("../../lib/api").getConfig();
 const path = require('path');
 
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const entries = {};
 Object.keys(config.jsEntries).forEach(appFile => {
@@ -45,7 +46,10 @@ module.exports = () => ({
             options: babelConfig
           },
           {
-            loader: 'ts-loader'
+            loader: 'ts-loader',
+            options: {
+              transpileOnly: true
+            }
           }
         ]
       },
@@ -77,6 +81,8 @@ module.exports = () => ({
   plugins: (() => {
 
     const plugins = [];
+    plugins.push(new ForkTsCheckerWebpackPlugin);
+
     if(config.hardSourceCache) {
 
       plugins.push(new HardSourceWebpackPlugin({
