@@ -20,7 +20,11 @@ module.exports = {
 
   webpack: {
     hardSourceCache: false,
-    enableBundleAnalyzerServer: true
+    enableBundleAnalyzerServer: true,
+    modules: {
+      externals: {},
+      alias: {}
+    }
   },
 
   logVerbosity: 1
