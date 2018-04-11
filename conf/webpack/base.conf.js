@@ -48,7 +48,8 @@ module.exports = () => ({
           {
             loader: 'ts-loader',
             options: {
-              transpileOnly: true
+              transpileOnly: true,
+              appendTsSuffixTo: [/\.vue$/]
             }
           }
         ]
@@ -72,7 +73,19 @@ module.exports = () => ({
             js: {
               loader: 'babel-loader',
               options: babelConfig
-            }
+            },
+            ts: [
+              {
+                loader: 'babel-loader',
+                options: babelConfig
+              },
+              {
+                loader: 'ts-loader',
+                options: {
+                  transpileOnly: true
+                }
+              }
+            ]
           }
         }
       }
