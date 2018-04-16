@@ -4,6 +4,7 @@ const path = require('path');
 
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const ForkTsCheckerNotifierWebpackPlugin = require('fork-ts-checker-notifier-webpack-plugin');
 
 const entries = {};
 Object.keys(config.jsEntries).forEach(appFile => {
@@ -31,12 +32,6 @@ module.exports = () => ({
   },
   module: {
     rules: [
-      {
-        test: /\.ts$/,
-        exclude: /node_modules/,
-        loader: 'tslint-loader',
-        enforce: 'pre'
-      },
       {
         test: /\.ts$/,
         exclude: /node_modules/,
@@ -94,7 +89,18 @@ module.exports = () => ({
   plugins: (() => {
 
     const plugins = [];
-    plugins.push(new ForkTsCheckerWebpackPlugin);
+    plugins.push(new ForkTsCheckerWebpackPlugin({
+      async: true,
+      silent: false,
+      tslint: true,
+      vue: true
+    }));
+
+    plugins.push(new ForkTsCheckerNotifierWebpackPlugin({
+      title: 'gbuild TS',
+      excludeWarnings: false,
+      skipSuccessful: true
+    }));
 
     if(config.webpack.hardSourceCache) {
 
