@@ -26,6 +26,8 @@ module.exports = {
       alias: {}
     }
   },
+	
+	customWatchers: [],
 
   logVerbosity: 1
 
