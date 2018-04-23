@@ -29,6 +29,8 @@ module.exports = {
 	
 	customWatchers: [],
 
+  php: false,
+
   logVerbosity: 1
 
 };
