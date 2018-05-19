@@ -5,6 +5,7 @@ const path = require('path');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const ForkTsCheckerNotifierWebpackPlugin = require('fork-ts-checker-notifier-webpack-plugin');
+const WebpackNotifierPlugin = require('webpack-notifier');
 
 const entries = {};
 Object.keys(config.jsEntries).forEach(appFile => {
@@ -52,8 +53,13 @@ module.exports = () => ({
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'eslint-loader',
-        enforce: 'pre'
+        loader: 'tslint-loader',
+        enforce: 'pre',
+        options: {}
+      },
+      {
+        test: /\.json5$/,
+        loader: 'json5-loader'
       },
       {
         test: /\.js$/,
@@ -100,6 +106,13 @@ module.exports = () => ({
       title: 'gbuild TS',
       excludeWarnings: false,
       skipSuccessful: true
+    }));
+
+    plugins.push(new WebpackNotifierPlugin({
+      title: 'gbuild',
+      excludeWarnings: false,
+      skipSuccessful: true,
+      icon: path.join(__dirname, '../../images/icon.png')
     }));
 
     if(config.webpack.hardSourceCache) {
