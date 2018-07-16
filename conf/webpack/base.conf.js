@@ -69,27 +69,7 @@ module.exports = () => ({
       },
       {
         test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          loaders: {
-            js: {
-              loader: 'babel-loader',
-              options: babelConfig
-            },
-            ts: [
-              {
-                loader: 'babel-loader',
-                options: babelConfig
-              },
-              {
-                loader: 'ts-loader',
-                options: {
-                  transpileOnly: true
-                }
-              }
-            ]
-          }
-        }
+        loader: 'vue-loader'
       }
     ]
   },
