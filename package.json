@@ -1,6 +1,6 @@
 {
   "name": "@considonet/g-build",
-  "version": "2.0.0-alpha.2",
+  "version": "2.0.0",
   "description": "GStrap Builder",
   "main": "./lib/api.js",
   "bin": {
@@ -12,6 +12,7 @@
   "author": "ConsidoNet Solutions Paweł Gabryelewicz",
   "license": "MIT",
   "dependencies": {
+    "@considonet/g-fontasticbundler": "^1.0.0",
     "@considonet/g-logger": "^1.0.0",
     "@considonet/g-scssimporter": "^1.0.0",
     "autoprefixer": "^8.6.5",
