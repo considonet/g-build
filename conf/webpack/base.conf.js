@@ -36,7 +36,10 @@ module.exports = () => ({
     rules: [
       {
         test: /\.ts$/,
-        exclude: /node_modules/,
+        exclude: file => (
+          /node_modules/.test(file) &&
+          !/\.vue\.js/.test(file)
+        ),
         use: [
           {
             loader: 'babel-loader',
@@ -53,7 +56,10 @@ module.exports = () => ({
       },
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: file => (
+          /node_modules/.test(file) &&
+          !/\.vue\.js/.test(file)
+        ),
         loader: 'tslint-loader',
         enforce: 'pre',
         options: {}
@@ -64,6 +70,7 @@ module.exports = () => ({
       },
       {
         test: /\.js$/,
+        exclude: /node_modules/,
         loader: 'babel-loader',
         options: babelConfig
       },
