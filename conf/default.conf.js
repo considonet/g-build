@@ -26,6 +26,9 @@ module.exports = {
       alias: {}
     }
   },
+
+  fontastic: {
+  },
 	
 	customWatchers: [],
 
