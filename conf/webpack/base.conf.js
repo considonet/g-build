@@ -6,6 +6,7 @@ const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const ForkTsCheckerNotifierWebpackPlugin = require('fork-ts-checker-notifier-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 const entries = {};
 Object.keys(config.jsEntries).forEach(appFile => {
@@ -82,6 +83,7 @@ module.exports = () => ({
   plugins: (() => {
 
     const plugins = [];
+    plugins.push(new VueLoaderPlugin());
     plugins.push(new ForkTsCheckerWebpackPlugin({
       async: true,
       silent: false,
