@@ -72,6 +72,7 @@ module.exports = () => ({
         exclude: /node_modules/,
         oneOf: [
             {
+                resourceQuery: /^\?vue/,
                 loader: 'tslint-loader',
                 options: {}
             },
