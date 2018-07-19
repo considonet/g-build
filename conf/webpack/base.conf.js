@@ -55,24 +55,32 @@ module.exports = () => ({
         ]
       },
       {
-        test: /\.js$/,
-        exclude: file => (
-          /node_modules/.test(file) &&
-          !/\.vue\.js/.test(file)
-        ),
-        loader: 'tslint-loader',
-        enforce: 'pre',
-        options: {}
-      },
-      {
         test: /\.json5$/,
         loader: 'json5-loader'
       },
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: file => (
+          /node_modules/.test(file) &&
+          !/\.vue\.js/.test(file)
+        ),
         loader: 'babel-loader',
         options: babelConfig
+      },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        oneOf: [
+            {
+                loader: 'tslint-loader',
+                options: {}
+            },
+            {
+                loader: 'tslint-loader',
+                enforce: 'pre',
+                options: {}
+            }
+        ]
       },
       {
         test: /\.vue$/,
