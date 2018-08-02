@@ -8,14 +8,10 @@ const ForkTsCheckerNotifierWebpackPlugin = require('fork-ts-checker-notifier-web
 const WebpackNotifierPlugin = require('webpack-notifier');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
-const entries = {};
-Object.keys(config.jsEntries).forEach(appFile => {
-  entries[config.jsEntries[appFile]] = ["babel-polyfill", path.join(process.cwd(), config.paths.input.js, appFile)]
-});
-
 const babelConfig = {
   "plugins": [
-    "transform-object-rest-spread"
+    "transform-object-rest-spread",
+    "syntax-dynamic-import"
   ],
   "presets": [
     [
@@ -27,6 +23,50 @@ const babelConfig = {
     ]
   ]
 };
+
+const splitChunks = {
+  automaticNameDelimiter: ".",
+  cacheGroups: {
+    "async/async": {
+      chunks: "async",
+      test: /[\\/]node_modules[\\/]/,
+      priority: -5
+    },
+    vendors: {
+      test: /[\\/]node_modules[\\/]/,
+      priority: -10
+    },
+    default: {
+      minChunks: 2,
+      priority: -20,
+      reuseExistingChunk: true
+    }
+  }
+};
+
+const entries = {};
+
+if(config.webpack.extractRuntime) {
+
+  entries[config.webpack.extractRuntime] = ["babel-polyfill"];
+
+  Object.keys(config.jsEntries).forEach(appFile => {
+    entries[config.jsEntries[appFile].replace(/\.js$/, "")] = [path.join(process.cwd(), config.paths.input.js, appFile)]
+  });
+
+  splitChunks.cacheGroups.vendors.chunks = chunk => config.webpack.extractModules && chunk.name !== config.webpack.extractRuntime;
+
+} else {
+
+  Object.keys(config.jsEntries).forEach(appFile => {
+    entries[config.jsEntries[appFile].replace(/\.js$/, "")] = ["babel-polyfill", path.join(process.cwd(), config.paths.input.js, appFile)]
+  });
+
+  if(config.webpack.extractModules) {
+    splitChunks.cacheGroups.vendors.chunks = "all";
+  }
+
+}
 
 module.exports = () => ({
   resolve: {
@@ -89,6 +129,9 @@ module.exports = () => ({
       }
     ]
   },
+  optimization: {
+    splitChunks
+  },
   plugins: (() => {
 
     const plugins = [];
@@ -101,13 +144,13 @@ module.exports = () => ({
     }));
 
     plugins.push(new ForkTsCheckerNotifierWebpackPlugin({
-      title: 'gbuild TS',
+      title: 'GBuild TS',
       excludeWarnings: false,
       skipSuccessful: true
     }));
 
     plugins.push(new WebpackNotifierPlugin({
-      title: 'gbuild',
+      title: 'GBuild',
       excludeWarnings: false,
       skipSuccessful: true,
       icon: path.join(__dirname, '../../images/icon.png')
@@ -138,7 +181,9 @@ module.exports = () => ({
   })(),
   output: {
     path: path.join(process.cwd(), config.paths.output.js),
-    filename: '[name]'
+    publicPath: typeof config.paths.public !== "undefined" ? config.paths.public.js : "/",
+    filename: '[name].js',
+    chunkFilename: '[name].js'
   },
   entry: entries
 });

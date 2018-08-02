@@ -1,6 +1,8 @@
 module.exports = {
 
   paths: {
+
+    projectRoot: "./",
     input: {
       css: "./css",
       js: "./js",
@@ -20,7 +22,9 @@ module.exports = {
 
   webpack: {
     hardSourceCache: false,
-    enableBundleAnalyzerServer: true,
+    enableBundleAnalyzerServer: false,
+    extractRuntime: false,
+    extractModules: false,
     modules: {
       externals: {},
       alias: {}

@@ -8,8 +8,6 @@ baseConfig.plugins.push(new webpack.DefinePlugin({
 
 baseConfig.mode = "production";
 
-baseConfig.optimization = {
-  minimize: true
-};
+baseConfig.optimization.minimize = true;
 
 module.exports = baseConfig;
