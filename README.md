@@ -1,4 +1,4 @@
-# GBuild 2.1
+# GBuild 2.2
 > A simple front-end building tool
 
 Licence: MIT
@@ -50,11 +50,14 @@ The following cli commands (tasks) are available and should be configured in you
 - `gbuild fontastic`
   Downloads the icons from Fontastic Cloud service and builds the CSS file with font assets
   
+The following parameters are supported:
+-c, --config \<configfile\> - (optional) specifies path to the main configuration file (default `./gbuildconfig.js`). The path is relative to directory where your `package.json` file is stored.  
+  
 ### Configuration
 The configuration is stored in the root directory where your project's `package.json` file is stored.  
 Configuration consists of the following files:
 
-#### Configuration file: `gbuildconfig.js`
+#### Main configuration file (by default `gbuildconfig.js`)
 The main GBuild configuration file exported as `cfg` - so everything has to be wrapped in `exports.cfg = {}` directive.
 
 Please mind that some of the settings have their defaults (to keep things simple) and don't need to be configured - see details below:
@@ -226,6 +229,11 @@ The following features are for now on our roadmap:
 - Assets optimization
 
 ## Changelog
+__2.2.0__ (2018/09/08)
+* Optional command line config path parameter
+* Better PHP detection (based on if composer.json file exists as well)
+* Dependencies upgrade
+
 __2.1.0__ (2018/08/02)
 * JavaScript module splitting (vendor, common runtime files)
 * Lazy `import()` statements support
