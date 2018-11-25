@@ -153,7 +153,7 @@ Specifies `webpack`-specific configuration. Because GBuild automatically generat
 - `extractModules` (new in 2.1) - determines whether to extract modules from `node_modules` to external files. If set to `true` there will be an additional bundle file created in your `paths.output.js` directory with a name `vendor.[yourInputJSEntryFileName].js`. When used with proper content hashing in the bundle file names, can speed up the page load as the user wil download only the updated bundle, not the runtime and the modules. `extractRuntime` can be used in conjunction with `extractModules` as well. __Important__: If `extractRuntime` is enabled and no files from `node_modules` are imported, the vendor JS file will not be created (only the runtime file).
 - `modules`
   - `modules.externals` - specifies external modules available in the global JS namespace. Example usage scenario: assuming that `jquery` is included in the HTML file from the CDN, the module shouldn't be bundled any more. In this case we set up a key-value array where the key specifies the module name and the value specifies the global variable under which the module is available. In this case the setting should be set to:
-  ```json
+  ```json5
   {
     "jquery": "jQuery" // because window.jQuery will contain the imported "jquery" module
   }
@@ -161,7 +161,7 @@ Specifies `webpack`-specific configuration. Because GBuild automatically generat
   - `modules.alias` - specifies the module resolving aliases. This setting uses the offical `webpack` syntax specified in the [docs](https://webpack.js.org/configuration/resolve/#resolve-alias). 
 
 The default `webpack` configuration looks like this:
-```json
+```json5
 {
   "hardSourceCache": false,
   "enableBundleAnalyzerServer": false,
@@ -196,7 +196,7 @@ Specifies the logging verbosity in the range of numbers 0 and 5 where 1 specifie
 
 #### Configuration file: `tsconfig.json`
 TypeScript compiler configuration file. The following settings are considered as recommended (due to the usage of `webpack` for module resolution and `babel` for ES6 to ES5 transpiling):
-```json
+```json5
 {
    "compilerOptions": {
      "noImplicitAny": true,
