@@ -20,7 +20,8 @@ const babelConfig = {
         "modules": false,
         "targets": {browsers: config.targetBrowsers }
       }
-    ]
+    ],
+    "@babel/preset-react"
   ]
 };
 
@@ -70,12 +71,12 @@ if(config.webpack.extractRuntime) {
 
 module.exports = () => ({
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.vue']
   },
   module: {
     rules: [
       {
-        test: /\.ts$/,
+        test: /\.tsx?$/,
         exclude: file => (
           /node_modules/.test(file) &&
           !/\.vue\.js/.test(file)
@@ -99,7 +100,7 @@ module.exports = () => ({
         loader: 'json5-loader'
       },
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         exclude: file => (
           /node_modules/.test(file) &&
           !/\.vue\.js/.test(file)

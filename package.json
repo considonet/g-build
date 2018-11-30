@@ -7,7 +7,14 @@
     "gbuild": "./lib/gbuild-cli.js"
   },
   "keywords": [
-    "webpack", "gulp", "typescript", "vue", "babel", "browser-sync", "node-sass", "build"
+    "webpack",
+    "gulp",
+    "typescript",
+    "vue",
+    "babel",
+    "browser-sync",
+    "node-sass",
+    "build"
   ],
   "author": "ConsidoNet Solutions Paweł Gabryelewicz",
   "license": "MIT",
@@ -19,6 +26,7 @@
     "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "^7.1.6",
+    "@babel/preset-react": "^7.0.0",
     "@babel/runtime": "^7.1.5",
     "@considonet/g-fontasticbundler": "^1.1.0",
     "@considonet/g-logger": "^1.1.1",
@@ -33,7 +41,6 @@
     "connect-modrewrite": "^0.10.2",
     "copy-webpack-plugin": "^4.5.2",
     "css-loader": "^1.0.0",
-    "deepmerge": "^2.1.1",
     "del": "^3.0.0",
     "fork-ts-checker-notifier-webpack-plugin": "^0.7.0",
     "fork-ts-checker-webpack-plugin": "^0.5.0",
@@ -44,6 +51,7 @@
     "gulp-sourcemaps": "^2.6.4",
     "hard-source-webpack-plugin": "^0.12.0",
     "json5-loader": "^1.0.1",
+    "lodash": "^4.17.11",
     "mini-css-extract-plugin": "^0.4.1",
     "node-php-awesome-server": "^1.3.1",
     "node-sass": "^4.9.3",
