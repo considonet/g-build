@@ -1,16 +1,17 @@
 {
   "name": "@considonet/g-build",
   "version": "2.2.1",
-  "description": "GStrap Builder",
+  "description": "A simple front-end building tool built on top of gulp and webpack",
   "main": "./lib/api.js",
   "bin": {
     "gbuild": "./lib/gbuild-cli.js"
   },
   "keywords": [
-    "gstrap"
+    "webpack", "gulp", "typescript", "vue", "babel", "browser-sync", "node-sass", "build"
   ],
   "author": "ConsidoNet Solutions Paweł Gabryelewicz",
   "license": "MIT",
+  "repository": "github:considonet/g-build",
   "dependencies": {
     "@babel/core": "^7.1.6",
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
