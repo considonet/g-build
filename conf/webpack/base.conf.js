@@ -10,17 +10,18 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 const babelConfig = {
   "plugins": [
-    "transform-object-rest-spread",
-    "syntax-dynamic-import"
+    "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-syntax-dynamic-import"
   ],
   "presets": [
     [
-      "env",
+      "@babel/preset-env",
       {
         "modules": false,
         "targets": {browsers: config.targetBrowsers }
       }
-    ]
+    ],
+    "@babel/preset-react"
   ]
 };
 
@@ -48,7 +49,7 @@ const entries = {};
 
 if(config.webpack.extractRuntime) {
 
-  entries[config.webpack.extractRuntime] = ["babel-polyfill"];
+  entries[config.webpack.extractRuntime] = ["@babel/polyfill"];
 
   Object.keys(config.jsEntries).forEach(appFile => {
     entries[config.jsEntries[appFile].replace(/\.js$/, "")] = [path.join(process.cwd(), config.paths.input.js, appFile)]
@@ -59,7 +60,7 @@ if(config.webpack.extractRuntime) {
 } else {
 
   Object.keys(config.jsEntries).forEach(appFile => {
-    entries[config.jsEntries[appFile].replace(/\.js$/, "")] = ["babel-polyfill", path.join(process.cwd(), config.paths.input.js, appFile)]
+    entries[config.jsEntries[appFile].replace(/\.js$/, "")] = ["@babel/polyfill", path.join(process.cwd(), config.paths.input.js, appFile)]
   });
 
   if(config.webpack.extractModules) {
@@ -70,12 +71,12 @@ if(config.webpack.extractRuntime) {
 
 module.exports = () => ({
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.vue']
   },
   module: {
     rules: [
       {
-        test: /\.ts$/,
+        test: /\.tsx?$/,
         exclude: file => (
           /node_modules/.test(file) &&
           !/\.vue\.js/.test(file)
@@ -99,7 +100,7 @@ module.exports = () => ({
         loader: 'json5-loader'
       },
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         exclude: file => (
           /node_modules/.test(file) &&
           !/\.vue\.js/.test(file)
