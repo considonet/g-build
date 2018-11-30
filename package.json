@@ -7,7 +7,14 @@
     "gbuild": "./lib/gbuild-cli.js"
   },
   "keywords": [
-    "webpack", "gulp", "typescript", "vue", "babel", "browser-sync", "node-sass", "build"
+    "webpack",
+    "gulp",
+    "typescript",
+    "vue",
+    "babel",
+    "browser-sync",
+    "node-sass",
+    "build"
   ],
   "author": "ConsidoNet Solutions Paweł Gabryelewicz",
   "license": "MIT",
@@ -19,6 +26,7 @@
     "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "^7.1.6",
+    "@babel/preset-react": "^7.0.0",
     "@babel/runtime": "^7.1.5",
     "@considonet/g-fontasticbundler": "^1.1.0",
     "@considonet/g-logger": "^1.1.1",
