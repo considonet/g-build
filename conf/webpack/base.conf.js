@@ -10,12 +10,12 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 const babelConfig = {
   "plugins": [
-    "transform-object-rest-spread",
-    "syntax-dynamic-import"
+    "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-syntax-dynamic-import"
   ],
   "presets": [
     [
-      "env",
+      "@babel/preset-env",
       {
         "modules": false,
         "targets": {browsers: config.targetBrowsers }
@@ -48,7 +48,7 @@ const entries = {};
 
 if(config.webpack.extractRuntime) {
 
-  entries[config.webpack.extractRuntime] = ["babel-polyfill"];
+  entries[config.webpack.extractRuntime] = ["@babel/polyfill"];
 
   Object.keys(config.jsEntries).forEach(appFile => {
     entries[config.jsEntries[appFile].replace(/\.js$/, "")] = [path.join(process.cwd(), config.paths.input.js, appFile)]
@@ -59,7 +59,7 @@ if(config.webpack.extractRuntime) {
 } else {
 
   Object.keys(config.jsEntries).forEach(appFile => {
-    entries[config.jsEntries[appFile].replace(/\.js$/, "")] = ["babel-polyfill", path.join(process.cwd(), config.paths.input.js, appFile)]
+    entries[config.jsEntries[appFile].replace(/\.js$/, "")] = ["@babel/polyfill", path.join(process.cwd(), config.paths.input.js, appFile)]
   });
 
   if(config.webpack.extractModules) {
