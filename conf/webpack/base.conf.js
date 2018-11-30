@@ -76,7 +76,7 @@ module.exports = () => ({
   module: {
     rules: [
       {
-        test: /\.ts$/,
+        test: /\.tsx?$/,
         exclude: file => (
           /node_modules/.test(file) &&
           !/\.vue\.js/.test(file)
