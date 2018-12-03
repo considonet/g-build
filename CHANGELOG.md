@@ -1,4 +1,7 @@
 ## Changelog
+__2.3.1__ (2018/12/03)
+* Win32 path resolving with new gulp fixed
+
 __2.3.0__ (2018/11/30)
 * Basic React support (both JSX and TSX)
 * TypeScript 3.x
