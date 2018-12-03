@@ -1,5 +1,5 @@
 # G-Build 2.3
-> A simple front-end building tool
+> A simple front-end building tool built on top of gulp and webpack
 
 Licence: MIT
 
