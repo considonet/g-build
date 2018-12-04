@@ -1,4 +1,7 @@
 ## Changelog
+__2.3.2__ (2018/12/04)
+* Win32 path resolving with new gulp fixed (for file watchers as well)
+
 __2.3.1__ (2018/12/03)
 * Win32 path resolving with new gulp fixed
 
