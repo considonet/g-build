@@ -97,6 +97,8 @@ For `projectRoot` set to `../` example settings are:
 }
 ```
 
+If any of the `paths.output` paths are set to `false`, the relevant task will not be executed. So if you want to disable JS compilation, just set `paths.output.js` to `false` (feature available from version 2.4).
+
 ##### `paths.public`
 New setting introduced in 2.1. Used to configure HTTP requests for lazy loaded `import()` statements. This setting uses the same syntax as `paths.output` and `paths.input`. However only `js` key is supported at the moment.
 Example: for `paths.public.js` set to `/assets/js/` (mind the trailing slash) `import(/* webpackChunkName: "vue" */"vue")` will request the JS file using the URL `/assets/js/async/async.vue.js`. See _core features_ section to learn more about lazy bundle importing.
@@ -202,6 +204,9 @@ Feature since 2.4. Specifies whether during the production build the image asset
 
 ##### `logVerbosity`
 Specifies the logging verbosity in the range of numbers 0 and 5 where 1 specifies minimal (but usually sufficient) logging and 5 very detailed messages. Setting to 0 disables the console messages completely. Default is `1`.
+
+##### `cleanDirectories`
+Specifies whether to purge the destination directories before compilation. Default is `true` (it was not possible to disable it before version 2.4).
 
 #### Configuration file: `tsconfig.json`
 TypeScript compiler configuration file. The following settings are considered as recommended (due to the usage of `webpack` for module resolution and `babel` for ES6 to ES5 transpiling):
