@@ -1,4 +1,4 @@
-# G-Build 2.3
+# G-Build 2.4
 > A simple front-end building tool built on top of gulp and webpack
 
 Licence: MIT
@@ -8,13 +8,13 @@ Copyright (C) 2017-2019 ConsidoNet Solutions
 www.considonet.com
 
 ## What is G-Build?
-G-Build is a front-end building automation tool build on top of `webpack` and `gulp`. It works in a similar way as scaffolds done with tools such as `@vue/cli`.
+G-Build is a front-end building automation tool build on top of `webpack` and `gulp`. It works in a similar way to scaffolds done with tools such as `@vue/cli`.
 
 You might say that there is no need for such tool - we all can configure `webpack`, `npm` and/or `gulp` on our own. This is true, but when you consider maintaining the developers team across several projects, some standardization had to be done. After several years our projects become more and more fragmented and we were unable to re-use common code across the projects due to configuration incompatibilities.
 
 G-Build was created as an internal tool to be used in all the projects done by our software studio. The goal is to keep the configuration simple and unified across all projects without the need of copying-and-pasting the webpack and gulp config files. This approach allowed us to keep the same building environment in all our projects (PHP- and Microsoft .NET-based), support modern JavaScript and TypeScript and gradually introduce support for the cutting-edge front-end technologies. You are also welcome to contribute in this project (since version 2.2.1 G-Build is available on GitHub).
 
-G-Build considers your front-end solution to be organized into 4 directories:
+G-Build considers your front-end solution to be organized into several directories:
 - JS (files such as .js, .ts, .jsx, .vue etc.)
 - Styles (SCSS/CSS files)
 - Misc (anything else stored in the assets directory - for example favicons)
@@ -23,7 +23,7 @@ G-Build considers your front-end solution to be organized into 4 directories:
 Please refer to the configuration manual below for more details. Each of these 4 primary tasks is optional (disabling can be achieved by specifying `false` as output path).
 
 ## Core features
-- Cross platform (tested on Windows, Mac and Linux)
+- Cross platform (tested and actively used on Windows, Mac and Linux)
 - 1-minute configuration
 - ES6 to ES5 transpilation using `babel`
 - JS modules support with highly optimized `webpack` configuration
