@@ -3,9 +3,7 @@
 
 Licence: MIT
 
-Portions Copyright (C) 2013-2018 ConsidoNet Solutions
-
-Copyright (C) 2018 ConsidoNet Solutions
+Copyright (C) 2017-2019 ConsidoNet Solutions
 
 www.considonet.com
 
@@ -192,6 +190,10 @@ Enables (`true`, using default settings), specifies non-standard settings (using
 
 Default `php` setting is `false`. This setting can be overridden with `browsersync.mode` set to `auto` - when a PHP project is detected, G-Build will try to launch PHP server anyway. If the setting is `true`, PHP server will be launched always, regardless of the project type detection.
 
+##### `lint`
+Specifies whether the code should be linted. This supports the following settings:
+- `scss` - if set to `true` runs `stylelint` to check your SCSS files. The rules for `stylelint` should be defined in `.stylelintrc` file (all formats are supported) in the same directory as `package.json` file, according to the [documentation](https://stylelint.io/user-guide/configuration/). If the linting fails, the code still remains compiled. For compatibility reasons the default for version 2.x is `false`. It will be `true` by default starting from G-Build 3.0.
+
 ##### `logVerbosity`
 Specifies the logging verbosity in the range of numbers 0 and 5 where 1 specifies minimal (but usually sufficient) logging and 5 very detailed messages. Setting to 0 disables the console messages completely. Default is `1`.
 
@@ -244,7 +246,6 @@ declare module "*.json" {
 
 ## Future plans
 The following features are for now on our roadmap:
-- Style linting
 - Project scaffolding
 - Support for `<style>` tags in SFCs (such as .vue files)
 - Assets optimization

@@ -31,6 +31,10 @@ module.exports = {
     }
   },
 
+  lint: {
+    scss: false
+  },
+
   fontastic: {
   },
 	
