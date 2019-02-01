@@ -6,7 +6,8 @@ module.exports = {
     input: {
       css: "./css",
       js: "./js",
-      misc: "./misc"
+      misc: "./misc",
+      ejs: "./ejs"
     }
   },
 
@@ -42,6 +43,7 @@ module.exports = {
 	customWatchers: [],
 
   optimizeAssets: true,
+  cleanDirectories: true,
 
   php: false,
 
