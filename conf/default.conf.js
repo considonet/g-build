@@ -8,7 +8,11 @@ module.exports = {
       js: "./js",
       misc: "./misc",
       ejs: "./ejs"
+    },
+    output: {
+      ejs: false
     }
+
   },
 
   autoprefixer: {},
@@ -43,7 +47,13 @@ module.exports = {
 	customWatchers: [],
 
   optimizeAssets: true,
-  cleanDirectories: true,
+  cleanDirectories: {
+    css: true,
+    js: true,
+    misc: true,
+    ejs: false
+  },
+  ejsVars: {},
 
   php: false,
 

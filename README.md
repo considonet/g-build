@@ -14,12 +14,13 @@ You might say that there is no need for such tool - we all can configure `webpac
 
 G-Build was created as an internal tool to be used in all the projects done by our software studio. The goal is to keep the configuration simple and unified across all projects without the need of copying-and-pasting the webpack and gulp config files. This approach allowed us to keep the same building environment in all our projects (PHP- and Microsoft .NET-based), support modern JavaScript and TypeScript and gradually introduce support for the cutting-edge front-end technologies. You are also welcome to contribute in this project (since version 2.2.1 G-Build is available on GitHub).
 
-G-Build considers your front-end solution to be organized into 3 directories:
+G-Build considers your front-end solution to be organized into 4 directories:
 - JS (files such as .js, .ts, .jsx, .vue etc.)
 - Styles (SCSS/CSS files)
 - Misc (anything else stored in the assets directory - for example favicons)
+- EJS (for EJS templates)
 
-Please refer to the configuration manual below for more details.
+Please refer to the configuration manual below for more details. Each of these 4 primary tasks is optional (disabling can be achieved by specifying `false` as output path).
 
 ## Core features
 - Cross platform (tested on Windows, Mac and Linux)
@@ -35,6 +36,7 @@ Please refer to the configuration manual below for more details.
 - Pre-configured `browser-sync`-based live-reload HTTP server and proxy supporting both PHP and Microsoft .NET projects and allowing to do CORS calls (`Access-Control-Allow-Origin`)
 - Integrated PHP server support (if `php-cli` available)
 - Assets optimization (using `imagemin`)
+- EJS template compilation
 
 ## Usage
 
@@ -67,12 +69,13 @@ Please mind that some of the settings have their defaults (to keep things simple
 Your project (not just frontend) root directory. If you prefer to keep your frontend files (including `package.json` and all the `node_modules`) in a specific directory, please specify the path to your project root directory (in this case `../`). Defaults to `./`.
 
 ##### `paths.input`
-G-Build keeps the input source files split into 3 directories - for JavaScript, styles and miscellaneous files. It is required to set `paths.input.js`, `paths.input.css` and `paths.input.misc` respectively using relative paths to the location of your project's `package.json` file (so sometimes not `projectRoot`). Default values:
+G-Build keeps the input source files split into several directories - for JavaScript, styles, miscellaneous and EJS files. It is required to set them using relative paths to the location of your project's `package.json` file (so sometimes not `projectRoot`). Default values:
 ```json
 {
   "css": "./css",
   "js": "./js",
-  "misc": "./misc"
+  "misc": "./misc",
+  "ejs": "./ejs"
 }
 ```
 
@@ -84,7 +87,8 @@ For `projectRoot` set to `./` (default) example settings are:
 {
   "css": "./assets/css",
   "js": "./assets/js",
-  "misc": "./assets/misc"
+  "misc": "./assets/misc",
+  "ejs": false
 }
 ```
 
@@ -93,7 +97,8 @@ For `projectRoot` set to `../` example settings are:
 {
   "css": "../assets/css",
   "js": "../assets/js",
-  "misc": "../assets/misc"
+  "misc": "../assets/misc",
+  "ejs": "../ejs"
 }
 ```
 
@@ -206,7 +211,31 @@ Feature since 2.4. Specifies whether during the production build the image asset
 Specifies the logging verbosity in the range of numbers 0 and 5 where 1 specifies minimal (but usually sufficient) logging and 5 very detailed messages. Setting to 0 disables the console messages completely. Default is `1`.
 
 ##### `cleanDirectories`
-Specifies whether to purge the destination directories before compilation. Default is `true` (it was not possible to disable it before version 2.4).
+Specifies whether to purge the output directories before compilation - specified for the same keys as for `paths.output` - boolean value per each directory type. Defaults:
+ 
+ ```json
+ {
+   "css": true,
+   "js": true,
+   "misc": true,
+   "ejs": false
+ }
+ ```
+Prior to version 2.4 it was not possible to disable directory cleaning.
+ 
+##### `ejsVars`
+Specifies variables passed to the EJS templates. You can put here any object to be accessed from `ejs` files. 
+
+Example usage:
+```json
+{
+  "someVar": "hello"
+}
+````
+
+The variable will be accessible in EJS file using `<%= someVar %>`.
+
+Default setting is `{}`.
 
 #### Configuration file: `tsconfig.json`
 TypeScript compiler configuration file. The following settings are considered as recommended (due to the usage of `webpack` for module resolution and `babel` for ES6 to ES5 transpiling):
