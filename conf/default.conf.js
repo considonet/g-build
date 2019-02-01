@@ -32,6 +32,7 @@ module.exports = {
   },
 
   lint: {
+    js: true,
     scss: false
   },
 

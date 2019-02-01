@@ -26,10 +26,11 @@ Please refer to the configuration manual below for more details.
 - 1-minute configuration
 - ES6 to ES5 transpilation using `babel`
 - JS modules support with highly optimized `webpack` configuration
-- Microsoft TypeScript 2.x support
+- Microsoft TypeScript 3.x support
 - Vue.js support (including TypeScript support and `vue-class-component` syntax)
 - React.js support (supporting JSX and TSX)
 - JS/TS code linting using `tslint`
+- SCSS code linting using `stylelint`
 - SCSS compilation with a custom smart module importer (more powerful than the default `node-sass` and `webpack` SCSS compilers - incl. support for `sass-eyeglass` module syntax).
 - Pre-configured `browser-sync`-based live-reload HTTP server and proxy supporting both PHP and Microsoft .NET projects and allowing to do CORS calls (`Access-Control-Allow-Origin`)
 - Integrated PHP server support (if `php-cli` available)
@@ -192,7 +193,8 @@ Default `php` setting is `false`. This setting can be overridden with `browsersy
 
 ##### `lint`
 Specifies whether the code should be linted. This supports the following settings:
-- `scss` - if set to `true` runs `stylelint` to check your SCSS files. The rules for `stylelint` should be defined in `.stylelintrc` file (all formats are supported) in the same directory as `package.json` file, according to the [documentation](https://stylelint.io/user-guide/configuration/). If the linting fails, the code still remains compiled. For compatibility reasons the default for version 2.x is `false`. It will be `true` by default starting from G-Build 3.0.
+- `js` - if set to `true` `tslint` will run to check compiled `.ts` and `.js` files. These also include all the variants such as `.vue` or `.jsx` files. `tslint.json` config file has to be placed in the same directory as `package.json`. Default: `true` (it was not possible to disable it before version 2.4).
+- `scss` - if set to `true` `stylelint` will run to check your SCSS files. The rules for `stylelint` should be defined in `.stylelintrc` file (all formats are supported) in the same directory as `package.json` file, according to the [documentation](https://stylelint.io/user-guide/configuration/). If the linting fails, the code still remains compiled. For compatibility reasons the default for version 2.x is `false`. It will be `true` by default starting from G-Build 3.0.
 
 ##### `logVerbosity`
 Specifies the logging verbosity in the range of numbers 0 and 5 where 1 specifies minimal (but usually sufficient) logging and 5 very detailed messages. Setting to 0 disables the console messages completely. Default is `1`.
@@ -215,8 +217,11 @@ TypeScript compiler configuration file. The following settings are considered as
  }
 ```
 
-#### Configuration file: `tslint.json`
-`tslint` configuration file. Customized depending on your personal preferences. Please make sure to point this file in your IDE.
+#### Optional configuration file: `tslint.json`
+`tslint` configuration file. Customized depending on your personal preferences. Please make sure to point this file in your IDE. Not required when `lint.js` is set to `false`. 
+
+#### Optional configuration file: `.stylelintrc`
+`stylelint` configuration file. Customized depending on your personal preferences. Not required when `lint.scss` is set to `false`.
 
 ## FAQ
 

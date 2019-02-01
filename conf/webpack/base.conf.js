@@ -69,66 +69,72 @@ if(config.webpack.extractRuntime) {
 
 }
 
+const rules = [
+  {
+    test: /\.tsx?$/,
+    exclude: file => (
+      /node_modules/.test(file) &&
+      !/\.vue\.js/.test(file)
+    ),
+    use: [
+      {
+        loader: 'babel-loader',
+        options: babelConfig
+      },
+      {
+        loader: 'ts-loader',
+        options: {
+          transpileOnly: true,
+          appendTsSuffixTo: [/\.vue$/]
+        }
+      }
+    ]
+  },
+  {
+    test: /\.json5$/,
+    loader: 'json5-loader'
+  },
+  {
+    test: /\.jsx?$/,
+    exclude: file => (
+      /node_modules/.test(file) &&
+      !/\.vue\.js/.test(file)
+    ),
+    loader: 'babel-loader',
+    options: babelConfig
+  }
+];
+
+if(config.lint.js) {
+  rules.push({
+    test: /\.js$/,
+    exclude: /node_modules/,
+    oneOf: [
+      {
+        resourceQuery: /^\?vue/,
+        loader: 'tslint-loader',
+        options: {}
+      },
+      {
+        loader: 'tslint-loader',
+        enforce: 'pre',
+        options: {}
+      }
+    ]
+  });
+}
+
+rules.push({
+  test: /\.vue$/,
+  loader: 'vue-loader'
+});
+
 module.exports = () => ({
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.vue']
   },
   module: {
-    rules: [
-      {
-        test: /\.tsx?$/,
-        exclude: file => (
-          /node_modules/.test(file) &&
-          !/\.vue\.js/.test(file)
-        ),
-        use: [
-          {
-            loader: 'babel-loader',
-            options: babelConfig
-          },
-          {
-            loader: 'ts-loader',
-            options: {
-              transpileOnly: true,
-              appendTsSuffixTo: [/\.vue$/]
-            }
-          }
-        ]
-      },
-      {
-        test: /\.json5$/,
-        loader: 'json5-loader'
-      },
-      {
-        test: /\.jsx?$/,
-        exclude: file => (
-          /node_modules/.test(file) &&
-          !/\.vue\.js/.test(file)
-        ),
-        loader: 'babel-loader',
-        options: babelConfig
-      },
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        oneOf: [
-            {
-                resourceQuery: /^\?vue/,
-                loader: 'tslint-loader',
-                options: {}
-            },
-            {
-                loader: 'tslint-loader',
-                enforce: 'pre',
-                options: {}
-            }
-        ]
-      },
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader'
-      }
-    ]
+    rules
   },
   optimization: {
     splitChunks
@@ -140,18 +146,18 @@ module.exports = () => ({
     plugins.push(new ForkTsCheckerWebpackPlugin({
       async: true,
       silent: false,
-      tslint: true,
+      tslint: config.lint.js,
       vue: true
     }));
 
     plugins.push(new ForkTsCheckerNotifierWebpackPlugin({
-      title: 'GBuild TS',
+      title: 'G-Build TS',
       excludeWarnings: false,
       skipSuccessful: true
     }));
 
     plugins.push(new WebpackNotifierPlugin({
-      title: 'GBuild',
+      title: 'G-Build',
       excludeWarnings: false,
       skipSuccessful: true,
       icon: path.join(__dirname, '../../images/icon.png')
