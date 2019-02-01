@@ -41,6 +41,8 @@ module.exports = {
 	
 	customWatchers: [],
 
+  optimizeAssets: true,
+
   php: false,
 
   logVerbosity: 1
