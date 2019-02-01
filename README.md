@@ -1,40 +1,42 @@
-# G-Build 2.3
+# G-Build 2.4
 > A simple front-end building tool built on top of gulp and webpack
 
 Licence: MIT
 
-Portions Copyright (C) 2013-2018 ConsidoNet Solutions
-
-Copyright (C) 2018 ConsidoNet Solutions
+Copyright (C) 2017-2019 ConsidoNet Solutions
 
 www.considonet.com
 
 ## What is G-Build?
-G-Build is a front-end building automation tool build on top of `webpack` and `gulp`. It works in a similar way as scaffolds done with tools such as `@vue/cli`.
+G-Build is a front-end building automation tool build on top of `webpack` and `gulp`. It works in a similar way to scaffolds done with tools such as `@vue/cli`.
 
 You might say that there is no need for such tool - we all can configure `webpack`, `npm` and/or `gulp` on our own. This is true, but when you consider maintaining the developers team across several projects, some standardization had to be done. After several years our projects become more and more fragmented and we were unable to re-use common code across the projects due to configuration incompatibilities.
 
 G-Build was created as an internal tool to be used in all the projects done by our software studio. The goal is to keep the configuration simple and unified across all projects without the need of copying-and-pasting the webpack and gulp config files. This approach allowed us to keep the same building environment in all our projects (PHP- and Microsoft .NET-based), support modern JavaScript and TypeScript and gradually introduce support for the cutting-edge front-end technologies. You are also welcome to contribute in this project (since version 2.2.1 G-Build is available on GitHub).
 
-G-Build considers your front-end solution to be organized into 3 directories:
+G-Build considers your front-end solution to be organized into several directories:
 - JS (files such as .js, .ts, .jsx, .vue etc.)
 - Styles (SCSS/CSS files)
 - Misc (anything else stored in the assets directory - for example favicons)
+- EJS (for EJS templates)
 
-Please refer to the configuration manual below for more details.
+Please refer to the configuration manual below for more details. Each of these 4 primary tasks is optional (disabling can be achieved by specifying `false` as output path).
 
 ## Core features
-- Cross platform (tested on Windows, Mac and Linux)
+- Cross platform (tested and actively used on Windows, Mac and Linux)
 - 1-minute configuration
 - ES6 to ES5 transpilation using `babel`
 - JS modules support with highly optimized `webpack` configuration
-- Microsoft TypeScript 2.x support
+- Microsoft TypeScript 3.x support
 - Vue.js support (including TypeScript support and `vue-class-component` syntax)
 - React.js support (supporting JSX and TSX)
 - JS/TS code linting using `tslint`
+- SCSS code linting using `stylelint`
 - SCSS compilation with a custom smart module importer (more powerful than the default `node-sass` and `webpack` SCSS compilers - incl. support for `sass-eyeglass` module syntax).
 - Pre-configured `browser-sync`-based live-reload HTTP server and proxy supporting both PHP and Microsoft .NET projects and allowing to do CORS calls (`Access-Control-Allow-Origin`)
 - Integrated PHP server support (if `php-cli` available)
+- Assets optimization (using `imagemin`)
+- EJS template compilation
 
 ## Usage
 
@@ -67,12 +69,13 @@ Please mind that some of the settings have their defaults (to keep things simple
 Your project (not just frontend) root directory. If you prefer to keep your frontend files (including `package.json` and all the `node_modules`) in a specific directory, please specify the path to your project root directory (in this case `../`). Defaults to `./`.
 
 ##### `paths.input`
-G-Build keeps the input source files split into 3 directories - for JavaScript, styles and miscellaneous files. It is required to set `paths.input.js`, `paths.input.css` and `paths.input.misc` respectively using relative paths to the location of your project's `package.json` file (so sometimes not `projectRoot`). Default values:
+G-Build keeps the input source files split into several directories - for JavaScript, styles, miscellaneous and EJS files. It is required to set them using relative paths to the location of your project's `package.json` file (so sometimes not `projectRoot`). Default values:
 ```json
 {
   "css": "./css",
   "js": "./js",
-  "misc": "./misc"
+  "misc": "./misc",
+  "ejs": "./ejs"
 }
 ```
 
@@ -84,7 +87,8 @@ For `projectRoot` set to `./` (default) example settings are:
 {
   "css": "./assets/css",
   "js": "./assets/js",
-  "misc": "./assets/misc"
+  "misc": "./assets/misc",
+  "ejs": false
 }
 ```
 
@@ -93,9 +97,12 @@ For `projectRoot` set to `../` example settings are:
 {
   "css": "../assets/css",
   "js": "../assets/js",
-  "misc": "../assets/misc"
+  "misc": "../assets/misc",
+  "ejs": "../ejs"
 }
 ```
+
+If any of the `paths.output` paths are set to `false`, the relevant task will not be executed. So if you want to disable JS compilation, just set `paths.output.js` to `false` (feature available from version 2.4).
 
 ##### `paths.public`
 New setting introduced in 2.1. Used to configure HTTP requests for lazy loaded `import()` statements. This setting uses the same syntax as `paths.output` and `paths.input`. However only `js` key is supported at the moment.
@@ -192,8 +199,43 @@ Enables (`true`, using default settings), specifies non-standard settings (using
 
 Default `php` setting is `false`. This setting can be overridden with `browsersync.mode` set to `auto` - when a PHP project is detected, G-Build will try to launch PHP server anyway. If the setting is `true`, PHP server will be launched always, regardless of the project type detection.
 
+##### `lint`
+Specifies whether the code should be linted. This supports the following settings:
+- `js` - if set to `true` `tslint` will run to check compiled `.ts` and `.js` files. These also include all the variants such as `.vue` or `.jsx` files. `tslint.json` config file has to be placed in the same directory as `package.json`. Default: `true` (it was not possible to disable it before version 2.4).
+- `scss` - if set to `true` `stylelint` will run to check your SCSS files. The rules for `stylelint` should be defined in `.stylelintrc` file (all formats are supported) in the same directory as `package.json` file, according to the [documentation](https://stylelint.io/user-guide/configuration/). If the linting fails, the code still remains compiled. For compatibility reasons the default for version 2.x is `false`. It will be `true` by default starting from G-Build 3.0.
+
+##### `optimizeAssets`
+Feature since 2.4. Specifies whether during the production build the image assets should be optimized (losslessly compressed). This is should be harmless for any files. Optimization is done using `imagemin` and applies to GIF, JPEG, PNG and SVG files. Default is `true`.
+
 ##### `logVerbosity`
 Specifies the logging verbosity in the range of numbers 0 and 5 where 1 specifies minimal (but usually sufficient) logging and 5 very detailed messages. Setting to 0 disables the console messages completely. Default is `1`.
+
+##### `cleanDirectories`
+Specifies whether to purge the output directories before compilation - specified for the same keys as for `paths.output` - boolean value per each directory type. Defaults:
+ 
+ ```json
+ {
+   "css": true,
+   "js": true,
+   "misc": true,
+   "ejs": false
+ }
+ ```
+Prior to version 2.4 it was not possible to disable directory cleaning.
+ 
+##### `ejsVars`
+Specifies variables passed to the EJS templates. You can put here any object to be accessed from `ejs` files. 
+
+Example usage:
+```json
+{
+  "someVar": "hello"
+}
+````
+
+The variable will be accessible in EJS file using `<%= someVar %>`.
+
+Default setting is `{}`.
 
 #### Configuration file: `tsconfig.json`
 TypeScript compiler configuration file. The following settings are considered as recommended (due to the usage of `webpack` for module resolution and `babel` for ES6 to ES5 transpiling):
@@ -213,8 +255,11 @@ TypeScript compiler configuration file. The following settings are considered as
  }
 ```
 
-#### Configuration file: `tslint.json`
-`tslint` configuration file. Customized depending on your personal preferences. Please make sure to point this file in your IDE.
+#### Optional configuration file: `tslint.json`
+`tslint` configuration file. Customized depending on your personal preferences. Please make sure to point this file in your IDE. Not required when `lint.js` is set to `false`. 
+
+#### Optional configuration file: `.stylelintrc`
+`stylelint` configuration file. Customized depending on your personal preferences. Not required when `lint.scss` is set to `false`.
 
 ## FAQ
 
@@ -244,8 +289,5 @@ declare module "*.json" {
 
 ## Future plans
 The following features are for now on our roadmap:
-- Style linting
 - Project scaffolding
 - Support for `<style>` tags in SFCs (such as .vue files)
-- Assets optimization
-

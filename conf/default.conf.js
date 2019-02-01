@@ -6,8 +6,13 @@ module.exports = {
     input: {
       css: "./css",
       js: "./js",
-      misc: "./misc"
+      misc: "./misc",
+      ejs: "./ejs"
+    },
+    output: {
+      ejs: false
     }
+
   },
 
   autoprefixer: {},
@@ -31,10 +36,24 @@ module.exports = {
     }
   },
 
+  lint: {
+    js: true,
+    scss: false
+  },
+
   fontastic: {
   },
 	
 	customWatchers: [],
+
+  optimizeAssets: true,
+  cleanDirectories: {
+    css: true,
+    js: true,
+    misc: true,
+    ejs: false
+  },
+  ejsVars: {},
 
   php: false,
 

@@ -1,4 +1,15 @@
 ## Changelog
+__2.4.0__ (2019/02/01)
+* SCSS linting (using `stylelint`)
+* EJS compilation support
+* Assets optimization (using `imagemin`)
+* Linting is now optional
+* Each task is now optional and can be disabled by setting `false` to a relevant output path
+* Directory cleaning can be disabled
+* Assets and misc watchers finally fixed
+* Webpack progress bar removed to improve readability
+* Dependencies upgrade
+
 __2.3.2__ (2018/12/04)
 * Win32 path resolving with new gulp fixed (for file watchers as well)
 
