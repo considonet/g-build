@@ -1,6 +1,6 @@
 {
   "name": "@considonet/g-build",
-  "version": "2.3.2",
+  "version": "2.4.0",
   "description": "A simple front-end building tool built on top of gulp and webpack",
   "main": "./lib/api.js",
   "bin": {
@@ -15,7 +15,9 @@
     "babel",
     "browser-sync",
     "node-sass",
-    "build"
+    "build",
+    "stylelint",
+    "ejs"
   ],
   "author": "ConsidoNet Solutions Paweł Gabryelewicz",
   "license": "MIT",
