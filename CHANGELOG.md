@@ -1,4 +1,9 @@
 ## Changelog
+__2.4.1__ (2019/02/12)
+* Hotfix: EJS compilation doesn't break the watch/serve task
+* Hotfix: Browsersync reload on assets/miscassets watcher trigger
+* Hotfix: EJS comilation on watcher start
+
 __2.4.0__ (2019/02/01)
 * SCSS linting (using `stylelint`)
 * EJS compilation support
