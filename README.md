@@ -33,6 +33,7 @@ Please refer to the configuration manual below for more details. Each of these 4
 - JS/TS code linting using `tslint`
 - SCSS code linting using `stylelint`
 - SCSS compilation with a custom smart module importer (more powerful than the default `node-sass` and `webpack` SCSS compilers - incl. support for `sass-eyeglass` module syntax).
+- Smart CSS minification using `cssnano`
 - Pre-configured `browser-sync`-based live-reload HTTP server and proxy supporting both PHP and Microsoft .NET projects and allowing to do CORS calls (`Access-Control-Allow-Origin`)
 - Integrated PHP server support (if `php-cli` available)
 - Assets optimization (using `imagemin`)

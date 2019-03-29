@@ -1,4 +1,7 @@
 ## Changelog
+__2.4.2__ (2019/03/29)
+* Hotfix: Autoprefixer couldn't be controlled with comments (because minification that stripped off the comments was done before autoprefixing). Now minification done by `cssnano`
+
 __2.4.1__ (2019/02/12)
 * Hotfix: EJS compilation doesn't break the watch/serve task
 * Hotfix: Browsersync reload on assets/miscassets watcher trigger
