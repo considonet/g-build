@@ -1,4 +1,7 @@
 ## Changelog
+__2.4.3__ (2019/04/12)
+* Hotfix: Unified line separators in `gbuild-cli.js` to LF. This should fix compatibility with `yarn` on *nixes. 
+
 __2.4.2__ (2019/03/29)
 * Hotfix: Autoprefixer couldn't be controlled with comments (because minification that stripped off the comments was done before autoprefixing). Now minification done by `cssnano`
 
