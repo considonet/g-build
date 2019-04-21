@@ -15,7 +15,9 @@ module.exports = {
 
   },
 
-  autoprefixer: {},
+  autoprefixer: null,
+  postcssPresetEnv: {},
+  flexbugs: {},
 
   browsersync: {
     spa: false,
@@ -41,12 +43,12 @@ module.exports = {
     scss: false
   },
 
-  fontastic: {
-  },
+  fontastic: {},
 	
 	customWatchers: [],
 
   optimizeAssets: true,
+  webpSupport: false,
   cleanDirectories: {
     css: true,
     js: true,

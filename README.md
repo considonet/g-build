@@ -1,4 +1,4 @@
-# G-Build 2.4
+# G-Build 2.5
 > A simple front-end building tool built on top of gulp and webpack
 
 Licence: MIT
@@ -23,21 +23,31 @@ G-Build considers your front-end solution to be organized into several directori
 Please refer to the configuration manual below for more details. Each of these 4 primary tasks is optional (disabling can be achieved by specifying `false` as output path).
 
 ## Core features
+
+### General
 - Cross platform (tested and actively used on Windows, Mac and Linux)
 - 1-minute configuration
+
+### JavaScript and related tasks
 - ES6 to ES5 transpilation using `babel`
 - JS modules support with highly optimized `webpack` configuration
 - Microsoft TypeScript 3.x support
-- Vue.js support (including TypeScript support and `vue-class-component` syntax)
 - React.js support (supporting JSX and TSX)
+- Vue.js support (including TypeScript support and `vue-class-component` syntax)
 - JS/TS code linting using `tslint`
-- SCSS code linting using `stylelint`
+
+### CSS, image assets and related tasks
 - SCSS compilation with a custom smart module importer (more powerful than the default `node-sass` and `webpack` SCSS compilers - incl. support for `sass-eyeglass` module syntax).
+- CSS autoprefixing and next-generation features polyfills using `postcss-preset-env` (which itself includes `autoprefixer`)
 - Smart CSS minification using `cssnano`
+- Optional seamless WebP image assets conversion (including CSS rewrites and non-compatible browsers support)
+- Assets optimization (using `imagemin`)
+- SCSS code linting using `stylelint`
+
+### Misc features
+- EJS template compilation
 - Pre-configured `browser-sync`-based live-reload HTTP server and proxy supporting both PHP and Microsoft .NET projects and allowing to do CORS calls (`Access-Control-Allow-Origin`)
 - Integrated PHP server support (if `php-cli` available)
-- Assets optimization (using `imagemin`)
-- EJS template compilation
 
 ## Usage
 
@@ -122,6 +132,52 @@ Required setting. Specifies the browser compatibility for `babel` and `autoprefi
 
 ##### `autoprefixer`
 This key contains `autoprefixer` settings conforming with the standard configuration syntax. The default setting is `{}`. Please refer to [autoprefixer GitHub page](https://github.com/postcss/autoprefixer) for more details. Because of common `targetBrowsers` setting, G-Build automatically sets up `browsers` setting for Autoprefixer so usually no additional configuration is required.
+
+##### `postcssPresetEnv`
+This key contains `postcss-preset-env` settings conforming with the standard configuration syntax. The default setting is `{}` which basically loads *stage 2* polyfills. Please refer to [postcss-preset-env GitHub page](https://github.com/csstools/postcss-preset-env) for more details. Because of common `targetBrowsers` setting, G-Build automatically sets up `browsers` setting for `postcss-preset-env`. If `autoprefixer` settings are set using the key above, they will be included into this config (because starting from version 2.5 `autoprefixer` is loaded via this plugin). If `stage` is set to 0, no polyfills are added.
+
+##### `flexbugs`
+This key contains `postcss-flexbugs-fixed` settings conforming with the standard configuration syntax. The default setting is `{}` which means that all flexbox polyfills are supported. Please refer to [PostCSS Flexbugs Fixes GitHub page](https://github.com/luisrudge/postcss-flexbugs-fixes) for more details.
+
+#### `webpSupport`
+This key enables [WebP](https://developers.google.com/speed/webp/) support in your project. This can dramatically increase your website performance on Chrome, Firefox and Android devices. The feature includes automatic image conversion and CSS rewriting to support older browsers. The goal is to keep it seamless - the developer has to prepare image assets like before. Then they'll get converted and a corresponding CSS syntax will be generated during the build and serve processes.
+
+Default: `false` (feature disabled). If changed to anything else (for example to `{}`, the following default settings are respected and can be overridden:
+
+```json5
+{
+    extensions: [ "png" ], // specifies file extensions to convert and rewrite
+    parentElement: "body", // specifies which selector will contain feature detection classes
+    noSupportClass: "no-webp", // feature detection class: no webp support
+    noJsClass: null, // feature detection class: no javascript support
+    supportClass: "webp", // feature detection class: webp support
+    replaceExtension: true, // replace original file extension instead of appending .webp
+    codecConfig: {
+      lossless: true
+    }
+}
+```
+
+For `codecConfig` see [imagemin-webp GitHub page](https://github.com/imagemin/imagemin-webp).
+
+If `noSupportClass` and `noJsClass` are `null` the ruleset will be appended, not replaced.
+
+Example usage:
+```css
+.myimage { background-image: url('./img/image.png'); }
+```
+
+will be replaced with a new ruleset:
+```css
+body.no-js .myimage { background-image: url('./img/image.png'); }
+body.no-webp .myimage { background-image: url('./img/image.png'); }
+body.webp .myimage { background-image: url('./img/image.webp'); }
+```
+
+To disable the rewrite in a specific ruleset, add a comment `/* no-webp */` inside.
+As this is quite a new feature, it is recommended to experiment, which setup works best for your project.
+
+Because of a spotty browser support, the CSS rulesets rely on browser feature detection. This can be achieved using [Modernizr](https://modernizr.com/) or [supports-webp](https://www.npmjs.com/package/supports-webp) npm package. The `noJsClass` is by default set to `null` so the website doesn't force the device to download non-webp contents (to save the amount of data transferred). However, no image will be displayed until JS code gets executed. If it's crucial to serve the contents for JS-disabled browsers, this setting might be useful.
 
 ##### `browsersync`
 Specifies `browser-sync`-specific configuration. To make things really simple, this setting doesn't follow any standards for `browser-sync` config - the following keys are supported:
