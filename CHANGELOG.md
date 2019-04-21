@@ -6,6 +6,7 @@ __2.5.0__ (TBA)
 * Added support for `postcss-flexbugs-fixes`
 * Now CSS is processed also for the development build and includes full source map support
 * Optional WebP support: image recompression and CSS rewrites to support non-compatible browsers
+* `vue-template-compiler` now a peer dependency (so there shouldn't be problems with incompatible `vue` versions anymore)
 * Code cleanup
 
 __2.4.3__ (2019/04/12)
