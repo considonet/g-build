@@ -57,6 +57,12 @@ module.exports = {
   },
   ejsVars: {},
 
+  bubbleNotifications: {
+    js: true,
+    styles: true,
+    ejs: true
+  },
+
   php: false,
 
   logVerbosity: 1
