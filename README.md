@@ -1,4 +1,4 @@
-# G-Build 2.4
+# G-Build 2.5
 > A simple front-end building tool built on top of gulp and webpack
 
 Licence: MIT
@@ -33,6 +33,7 @@ Please refer to the configuration manual below for more details. Each of these 4
 - JS/TS code linting using `tslint`
 - SCSS code linting using `stylelint`
 - SCSS compilation with a custom smart module importer (more powerful than the default `node-sass` and `webpack` SCSS compilers - incl. support for `sass-eyeglass` module syntax).
+- CSS autoprefixing and next-generation features polyfills using `postcss-preset-env` (which itself includes `autoprefixer`)
 - Smart CSS minification using `cssnano`
 - Pre-configured `browser-sync`-based live-reload HTTP server and proxy supporting both PHP and Microsoft .NET projects and allowing to do CORS calls (`Access-Control-Allow-Origin`)
 - Integrated PHP server support (if `php-cli` available)
@@ -122,6 +123,12 @@ Required setting. Specifies the browser compatibility for `babel` and `autoprefi
 
 ##### `autoprefixer`
 This key contains `autoprefixer` settings conforming with the standard configuration syntax. The default setting is `{}`. Please refer to [autoprefixer GitHub page](https://github.com/postcss/autoprefixer) for more details. Because of common `targetBrowsers` setting, G-Build automatically sets up `browsers` setting for Autoprefixer so usually no additional configuration is required.
+
+##### `postcssPresetEnv`
+This key contains `postcss-preset-env` settings conforming with the standard configuration syntax. The default setting is `{}` which basically loads *stage 2* polyfills. Please refer to [postcss-preset-env GitHub page](https://github.com/csstools/postcss-preset-env) for more details. Because of common `targetBrowsers` setting, G-Build automatically sets up `browsers` setting for `postcss-preset-env`. If `autoprefixer` settings are set using the key above, they will be included into this config (because starting from version 2.5 `autoprefixer` is loaded via this plugin). If `stage` is set to 0, no polyfills are added.
+
+##### `flexbugs`
+This key contains `postcss-flexbugs-fixed` settings conforming with the standard configuration syntax. The default setting is `{}` which means that all flexbox polyfills are supported. Please refer to [PostCSS Flexbugs Fixes GitHub page](https://github.com/luisrudge/postcss-flexbugs-fixes) for more details.
 
 ##### `browsersync`
 Specifies `browser-sync`-specific configuration. To make things really simple, this setting doesn't follow any standards for `browser-sync` config - the following keys are supported:

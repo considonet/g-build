@@ -1,4 +1,12 @@
 ## Changelog
+__2.5.0__ (TBA)
+* Style processing refactored
+* Switched CSS processing to `postcss` which should increase CSS building performance
+* Added support for `postcss-preset-env`
+* Added support for `postcss-flexbugs-fixes`
+* Now CSS is processed also for the development version and includes full source map support
+* Code cleanup
+
 __2.4.3__ (2019/04/12)
 * Hotfix: Unified line separators in `gbuild-cli.js` to LF. This should fix compatibility with `yarn` on *nixes. 
 
