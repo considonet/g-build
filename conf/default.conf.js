@@ -48,6 +48,7 @@ module.exports = {
 	customWatchers: [],
 
   optimizeAssets: true,
+  webpSupport: false,
   cleanDirectories: {
     css: true,
     js: true,
