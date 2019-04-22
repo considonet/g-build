@@ -1,5 +1,5 @@
 ## Changelog
-__3.0.0__ (TBA)
+__3.0.0__ (2019/04/22)
 * Breaking change: `vue-template-compiler` now a peer dependency (so there shouldn't be problems with incompatible `vue` versions anymore)
 * Breaking change: `hard-source-webpack-plugin` removed
 * Breaking change: deprecated JS entry points syntax not supported any more
