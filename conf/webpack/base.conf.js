@@ -7,6 +7,16 @@ const ForkTsCheckerNotifierWebpackPlugin = require('fork-ts-checker-notifier-web
 const WebpackNotifierPlugin = require('webpack-notifier');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
+const babelPresetEnvConfig = {
+  "modules": false,
+  "targets": {browsers: config.targetBrowsers }
+};
+
+if(config.webpack.usagePolyfills) {
+  babelPresetEnvConfig.useBuiltIns = "usage";
+  babelPresetEnvConfig.corejs = config.webpack.coreJsVersion;
+}
+
 const babelConfig = {
   "plugins": [
     "@babel/plugin-proposal-object-rest-spread",
@@ -15,10 +25,7 @@ const babelConfig = {
   "presets": [
     [
       "@babel/preset-env",
-      {
-        "modules": false,
-        "targets": {browsers: config.targetBrowsers }
-      }
+      babelPresetEnvConfig
     ],
     "@babel/preset-react"
   ]
@@ -26,6 +33,7 @@ const babelConfig = {
 
 const splitChunks = {
   automaticNameDelimiter: ".",
+  minSize: 0,
   cacheGroups: {
     "async/async": {
       chunks: "async",
@@ -48,7 +56,11 @@ const entries = {};
 
 if(config.webpack.extractRuntime) {
 
-  entries[config.webpack.extractRuntime] = ["@babel/polyfill"];
+  if(config.webpack.usagePolyfills) {
+    entries[config.webpack.extractRuntime] = [];
+  } else {
+    entries[config.webpack.extractRuntime] = ["@babel/polyfill"];
+  }
 
   Object.keys(config.jsEntries).forEach(appFile => {
     entries[config.jsEntries[appFile]] = [path.join(process.cwd(), config.paths.input.js, appFile)]
@@ -58,9 +70,19 @@ if(config.webpack.extractRuntime) {
 
 } else {
 
-  Object.keys(config.jsEntries).forEach(appFile => {
-    entries[config.jsEntries[appFile]] = ["@babel/polyfill", path.join(process.cwd(), config.paths.input.js, appFile)]
-  });
+  if(config.webpack.usagePolyfills) {
+
+    Object.keys(config.jsEntries).forEach(appFile => {
+      entries[config.jsEntries[appFile]] = [path.join(process.cwd(), config.paths.input.js, appFile)]
+    });
+
+  } else {
+
+    Object.keys(config.jsEntries).forEach(appFile => {
+      entries[config.jsEntries[appFile]] = ["@babel/polyfill", path.join(process.cwd(), config.paths.input.js, appFile)]
+    });
+
+  }
 
   if(config.webpack.extractModules) {
     splitChunks.cacheGroups.vendors.chunks = "all";

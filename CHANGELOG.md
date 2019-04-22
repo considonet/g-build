@@ -1,7 +1,10 @@
 ## Changelog
 __3.0.0__ (TBA)
 * Breaking change: `vue-template-compiler` now a peer dependency (so there shouldn't be problems with incompatible `vue` versions anymore)
-* Style processing refactored
+* Breaking change: `hard-source-webpack-plugin` removed
+* Breaking change: deprecated JS entry points syntax not supported any more
+* Potentially breaking change: `babel-polyfill` now by default is loaded selectively based on usage. Old setup can be retained via config file.
+* Assets and style processing refactored
 * Switched CSS processing to `postcss` which should increase CSS building performance
 * Added support for `postcss-preset-env`
 * Added support for `postcss-flexbugs-fixes`

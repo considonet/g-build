@@ -33,6 +33,8 @@ module.exports = {
     enableBundleAnalyzerServer: false,
     extractRuntime: false,
     extractModules: false,
+    usagePolyfills: true,
+    coreJsVersion: 3,
     modules: {
       externals: {},
       alias: {}
