@@ -24,7 +24,8 @@ module.exports = {
     port: 3000,
     openBrowser: true,
     urlRewrites: [],
-    mode: "auto"
+    mode: "auto",
+    notify: true
   },
 
   webpack: {
