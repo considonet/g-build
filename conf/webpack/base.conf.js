@@ -2,7 +2,6 @@ const webpack = require('webpack');
 const config = require("../../lib/api").getConfig();
 const path = require('path');
 
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const ForkTsCheckerNotifierWebpackPlugin = require('fork-ts-checker-notifier-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
@@ -52,7 +51,7 @@ if(config.webpack.extractRuntime) {
   entries[config.webpack.extractRuntime] = ["@babel/polyfill"];
 
   Object.keys(config.jsEntries).forEach(appFile => {
-    entries[config.jsEntries[appFile].replace(/\.js$/, "")] = [path.join(process.cwd(), config.paths.input.js, appFile)]
+    entries[config.jsEntries[appFile]] = [path.join(process.cwd(), config.paths.input.js, appFile)]
   });
 
   splitChunks.cacheGroups.vendors.chunks = chunk => config.webpack.extractModules && chunk.name !== config.webpack.extractRuntime;
@@ -60,7 +59,7 @@ if(config.webpack.extractRuntime) {
 } else {
 
   Object.keys(config.jsEntries).forEach(appFile => {
-    entries[config.jsEntries[appFile].replace(/\.js$/, "")] = ["@babel/polyfill", path.join(process.cwd(), config.paths.input.js, appFile)]
+    entries[config.jsEntries[appFile]] = ["@babel/polyfill", path.join(process.cwd(), config.paths.input.js, appFile)]
   });
 
   if(config.webpack.extractModules) {
@@ -164,23 +163,6 @@ module.exports = () => ({
         excludeWarnings: false,
         skipSuccessful: true,
         icon: path.join(__dirname, '../../images/icon.png')
-      }));
-
-    }
-
-    if(config.webpack.hardSourceCache) {
-
-      plugins.push(new HardSourceWebpackPlugin({
-        cacheDirectory: path.join(process.cwd(), 'node_modules/.cache/hard-source/[confighash]'),
-        recordsPath: path.join(process.cwd(), 'node_modules/.cache/hard-source/[confighash]/records.json'),
-        configHash(webpackConfig) {
-          return require('node-object-hash')({sort: false}).hash(webpackConfig);
-        },
-        environmentHash: {
-          root: process.cwd(),
-          directories: ['node_modules'],
-          files: ['package.json']
-        }
       }));
 
     }
