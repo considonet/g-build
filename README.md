@@ -324,7 +324,8 @@ TypeScript compiler configuration file. The following settings are considered as
      "pretty": true,
      "sourceMap": true,
      "experimentalDecorators": true,
-     "jsx": "preserve"
+     "jsx": "preserve",
+     "resolveJsonModule": true
    }
  }
 ```
@@ -348,16 +349,6 @@ TypeScript needs to be informed that exports from .vue files are of type `Vue`. 
 declare module "*.vue" {
   import Vue from "vue";
   export default Vue;
-}
-```
-
-__How to be able to import .json files into TypeScript files?__
-
-This is similar issue to the one above. In this case no type is declared in .json file so we have to set it manually - also using a shim (usually we keep it in `/shims/json.d.ts`) containing:
-```typescript
-declare module "*.json" {
-  const data: any;
-  export default data;
 }
 ```
 
