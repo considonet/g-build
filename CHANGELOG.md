@@ -1,12 +1,14 @@
 ## Changelog
-__2.5.0__ (TBA)
+__3.0.0__ (TBA)
+* Breaking change: `vue-template-compiler` now a peer dependency (so there shouldn't be problems with incompatible `vue` versions anymore)
 * Style processing refactored
 * Switched CSS processing to `postcss` which should increase CSS building performance
 * Added support for `postcss-preset-env`
 * Added support for `postcss-flexbugs-fixes`
 * Now CSS is processed also for the development build and includes full source map support
 * Optional WebP support: image recompression and CSS rewrites to support non-compatible browsers
-* `vue-template-compiler` now a peer dependency (so there shouldn't be problems with incompatible `vue` versions anymore)
+* Configurable bubble notifications (before they were always on for `webpack` and TS compilation)
+* `browser-sync` in-browser notifications can now be disabled
 * Code cleanup
 
 __2.4.3__ (2019/04/12)

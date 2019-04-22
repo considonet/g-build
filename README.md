@@ -1,4 +1,4 @@
-# G-Build 2.5
+# G-Build 3.0
 > A simple front-end building tool built on top of gulp and webpack
 
 Licence: MIT
@@ -198,6 +198,7 @@ Specifies `browser-sync`-specific configuration. To make things really simple, t
   - `serve` - launches a static HTTP server with a root directory set in `paths.projectRoot`
   - `proxy` - launches a proxy server proxying requests to the URL set in `browsersync.proxiedUrl`. Useful for `docker`-based solutions or locally hosted projects using `apache` etc.
   - `auto` - detects the running environment in a smart way (detecting a Visual Studio solution, PHP solution or a static frontend package). When VS solution is detected, G-Build automatically configures the `browsersync.proxiedUrl` to the IIS Express URL and port set in the `.csproj` file. When a PHP solution is detected, G-Build runs a `php-cli` server and proxies it through `browser-sync`. If none of the above are detected, it runs in the static HTTP server mode.
+- `browsersync.notify` - determines whether `browser-sync` should display in-browser notifications (usually about content reload).
 
 The default `browsersync` configuration is sufficient for most of the projects and looks like this:
 ```json
@@ -206,7 +207,8 @@ The default `browsersync` configuration is sufficient for most of the projects a
   "port": 3000,
   "openBrowser": true,
   "urlRewrites": [],
-  "mode": "auto"
+  "mode": "auto",
+  "notify": true
 }
 ```
 
@@ -293,6 +295,22 @@ Example usage:
 The variable will be accessible in EJS file using `<%= someVar %>`.
 
 Default setting is `{}`.
+
+##### `bubbleNotifications`
+Specifies which system notifications should be displayed when G-Build is compiling. Default settings:
+```json
+{
+  "js": true,
+  "styles": true,
+  "ejs": true
+}
+```
+
+- `js` notifications are displayed when JavaScript/TypeScript errors happen, linting fails or first successful compilation occured
+- `styles` notifications are displayed if SCSS compilation and style linting fail
+- `ejs` notifications deal with EJS compilation failures
+
+The notifications might be helpful when G-Build runs in a minimized console window.
 
 #### Configuration file: `tsconfig.json`
 TypeScript compiler configuration file. The following settings are considered as recommended (due to the usage of `webpack` for module resolution and `babel` for ES6 to ES5 transpiling):

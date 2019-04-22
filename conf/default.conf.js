@@ -24,7 +24,8 @@ module.exports = {
     port: 3000,
     openBrowser: true,
     urlRewrites: [],
-    mode: "auto"
+    mode: "auto",
+    notify: true
   },
 
   webpack: {
@@ -56,6 +57,12 @@ module.exports = {
     ejs: false
   },
   ejsVars: {},
+
+  bubbleNotifications: {
+    js: true,
+    styles: true,
+    ejs: true
+  },
 
   php: false,
 

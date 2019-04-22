@@ -150,18 +150,23 @@ module.exports = () => ({
       vue: true
     }));
 
-    plugins.push(new ForkTsCheckerNotifierWebpackPlugin({
-      title: 'G-Build TS',
-      excludeWarnings: false,
-      skipSuccessful: true
-    }));
+    // Optional notifications
+    if(config.bubbleNotifications.js) {
 
-    plugins.push(new WebpackNotifierPlugin({
-      title: 'G-Build',
-      excludeWarnings: false,
-      skipSuccessful: true,
-      icon: path.join(__dirname, '../../images/icon.png')
-    }));
+      plugins.push(new ForkTsCheckerNotifierWebpackPlugin({
+        title: 'G-Build (TS)',
+        excludeWarnings: false,
+        skipSuccessful: true
+      }));
+
+      plugins.push(new WebpackNotifierPlugin({
+        title: 'G-Build (JS)',
+        excludeWarnings: false,
+        skipSuccessful: true,
+        icon: path.join(__dirname, '../../images/icon.png')
+      }));
+
+    }
 
     if(config.webpack.hardSourceCache) {
 
