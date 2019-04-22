@@ -1,4 +1,19 @@
 ## Changelog
+__3.0.0__ (2019/04/22)
+* Breaking change: `vue-template-compiler` now a peer dependency (so there shouldn't be problems with incompatible `vue` versions anymore)
+* Breaking change: `hard-source-webpack-plugin` removed
+* Breaking change: deprecated JS entry points syntax not supported any more
+* Potentially breaking change: `babel-polyfill` now by default is loaded selectively based on usage. Old setup can be retained via config file.
+* Switched CSS processing to `postcss` which should increase CSS building performance
+* Added support for `postcss-preset-env`
+* Added support for `postcss-flexbugs-fixes`
+* Now CSS is processed also for the development build and includes full source map support
+* Optional WebP support: image recompression and CSS rewrites to support non-compatible browsers
+* Configurable bubble notifications (before they were always on for `webpack` and TS compilation)
+* `browser-sync` in-browser notifications can now be disabled
+* Assets and style processing refactored
+* Code cleanup
+
 __2.4.3__ (2019/04/12)
 * Hotfix: Unified line separators in `gbuild-cli.js` to LF. This should fix compatibility with `yarn` on *nixes. 
 

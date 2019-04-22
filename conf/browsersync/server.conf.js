@@ -7,7 +7,8 @@ module.exports = () => {
     server: {
       baseDir: config.paths.projectRoot,
       directory: true
-    }
+    },
+    notify: config.browsersync.notify
   };
 
   // Url rewrites

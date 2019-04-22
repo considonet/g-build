@@ -1,4 +1,4 @@
-# G-Build 2.4
+# G-Build 3.0
 > A simple front-end building tool built on top of gulp and webpack
 
 Licence: MIT
@@ -23,21 +23,31 @@ G-Build considers your front-end solution to be organized into several directori
 Please refer to the configuration manual below for more details. Each of these 4 primary tasks is optional (disabling can be achieved by specifying `false` as output path).
 
 ## Core features
+
+### General
 - Cross platform (tested and actively used on Windows, Mac and Linux)
 - 1-minute configuration
+
+### JavaScript and related tasks
 - ES6 to ES5 transpilation using `babel`
 - JS modules support with highly optimized `webpack` configuration
 - Microsoft TypeScript 3.x support
-- Vue.js support (including TypeScript support and `vue-class-component` syntax)
 - React.js support (supporting JSX and TSX)
+- Vue.js support (including TypeScript support and `vue-class-component` syntax)
 - JS/TS code linting using `tslint`
-- SCSS code linting using `stylelint`
+
+### CSS, image assets and related tasks
 - SCSS compilation with a custom smart module importer (more powerful than the default `node-sass` and `webpack` SCSS compilers - incl. support for `sass-eyeglass` module syntax).
+- CSS autoprefixing and next-generation features polyfills using `postcss-preset-env` (which itself includes `autoprefixer`)
 - Smart CSS minification using `cssnano`
+- Optional seamless WebP image assets conversion (including CSS rewrites and non-compatible browsers support)
+- Assets optimization (using `imagemin`)
+- SCSS code linting using `stylelint`
+
+### Misc features
+- EJS template compilation
 - Pre-configured `browser-sync`-based live-reload HTTP server and proxy supporting both PHP and Microsoft .NET projects and allowing to do CORS calls (`Access-Control-Allow-Origin`)
 - Integrated PHP server support (if `php-cli` available)
-- Assets optimization (using `imagemin`)
-- EJS template compilation
 
 ## Usage
 
@@ -123,6 +133,52 @@ Required setting. Specifies the browser compatibility for `babel` and `autoprefi
 ##### `autoprefixer`
 This key contains `autoprefixer` settings conforming with the standard configuration syntax. The default setting is `{}`. Please refer to [autoprefixer GitHub page](https://github.com/postcss/autoprefixer) for more details. Because of common `targetBrowsers` setting, G-Build automatically sets up `browsers` setting for Autoprefixer so usually no additional configuration is required.
 
+##### `postcssPresetEnv`
+This key contains `postcss-preset-env` settings conforming with the standard configuration syntax. The default setting is `{}` which basically loads *stage 2* polyfills. Please refer to [postcss-preset-env GitHub page](https://github.com/csstools/postcss-preset-env) for more details. Because of common `targetBrowsers` setting, G-Build automatically sets up `browsers` setting for `postcss-preset-env`. If `autoprefixer` settings are set using the key above, they will be included into this config (because starting from version 3.0 `autoprefixer` is loaded via this plugin). If `stage` is set to 0, no polyfills are added.
+
+##### `flexbugs`
+This key contains `postcss-flexbugs-fixed` settings conforming with the standard configuration syntax. The default setting is `{}` which means that all flexbox polyfills are supported. Please refer to [PostCSS Flexbugs Fixes GitHub page](https://github.com/luisrudge/postcss-flexbugs-fixes) for more details.
+
+#### `webpSupport`
+This key enables [WebP](https://developers.google.com/speed/webp/) support in your project. This can dramatically increase your website performance on Chrome, Firefox and Android devices. The feature includes automatic image conversion and CSS rewriting to support older browsers. The goal is to keep it seamless - the developer has to prepare image assets like before. Then they'll get converted and a corresponding CSS syntax will be generated during the build and serve processes.
+
+Default: `false` (feature disabled). If changed to anything else (for example to `{}`, the following default settings are respected and can be overridden:
+
+```json5
+{
+    extensions: [ "png" ], // specifies file extensions to convert and rewrite
+    parentElement: "body", // specifies which selector will contain feature detection classes
+    noSupportClass: "no-webp", // feature detection class: no webp support
+    noJsClass: null, // feature detection class: no javascript support
+    supportClass: "webp", // feature detection class: webp support
+    replaceExtension: true, // replace original file extension instead of appending .webp
+    codecConfig: {
+      lossless: true
+    }
+}
+```
+
+For `codecConfig` see [imagemin-webp GitHub page](https://github.com/imagemin/imagemin-webp).
+
+If `noSupportClass` and `noJsClass` are `null` the ruleset will be appended, not replaced.
+
+Example usage:
+```css
+.myimage { background-image: url('./img/image.png'); }
+```
+
+will be replaced with a new ruleset:
+```css
+body.no-js .myimage { background-image: url('./img/image.png'); }
+body.no-webp .myimage { background-image: url('./img/image.png'); }
+body.webp .myimage { background-image: url('./img/image.webp'); }
+```
+
+To disable the rewrite in a specific ruleset, add a comment `/* no-webp */` inside.
+As this is quite a new feature, it is recommended to experiment, which setup works best for your project.
+
+Because of a spotty browser support, the CSS rulesets rely on browser feature detection. This can be achieved using [Modernizr](https://modernizr.com/) or [supports-webp](https://www.npmjs.com/package/supports-webp) npm package. The `noJsClass` is by default set to `null` so the website doesn't force the device to download non-webp contents (to save the amount of data transferred). However, no image will be displayed until JS code gets executed. If it's crucial to serve the contents for JS-disabled browsers, this setting might be useful.
+
 ##### `browsersync`
 Specifies `browser-sync`-specific configuration. To make things really simple, this setting doesn't follow any standards for `browser-sync` config - the following keys are supported:
 - `browsersync.spa` - determines whether `browser-sync-spa` plugin is used. Useful for developing SPA apps with a default `index.html` file and routing support. This setting works only if `browser-sync` runs in the server mode (not proxy).
@@ -142,6 +198,7 @@ Specifies `browser-sync`-specific configuration. To make things really simple, t
   - `serve` - launches a static HTTP server with a root directory set in `paths.projectRoot`
   - `proxy` - launches a proxy server proxying requests to the URL set in `browsersync.proxiedUrl`. Useful for `docker`-based solutions or locally hosted projects using `apache` etc.
   - `auto` - detects the running environment in a smart way (detecting a Visual Studio solution, PHP solution or a static frontend package). When VS solution is detected, G-Build automatically configures the `browsersync.proxiedUrl` to the IIS Express URL and port set in the `.csproj` file. When a PHP solution is detected, G-Build runs a `php-cli` server and proxies it through `browser-sync`. If none of the above are detected, it runs in the static HTTP server mode.
+- `browsersync.notify` - determines whether `browser-sync` should display in-browser notifications (usually about content reload).
 
 The default `browsersync` configuration is sufficient for most of the projects and looks like this:
 ```json
@@ -150,16 +207,18 @@ The default `browsersync` configuration is sufficient for most of the projects a
   "port": 3000,
   "openBrowser": true,
   "urlRewrites": [],
-  "mode": "auto"
+  "mode": "auto",
+  "notify": true
 }
 ```
 
 ##### `webpack`
 Specifies `webpack`-specific configuration. Because G-Build automatically generates a pre-set `webpack` configuration, this setting doesn't follow any standards for `webpack` config - the following keys are supported:
-- `hardSourceCache` (deprecated, will be removed in 3.x version) - determines whether to use `hard-source-webpack-plugin` to increase the performance of the build process. As of 2018 the performance of `webpack` 4 has been greatly improved and this setting is no longer required nor maintained.
 - `enableBundleAnalyzerServer` - determines whether to run a diagnostic `webpack-bundle-analyzer` server to understand your JS bundle structure and sizes.
 - `extractRuntime` (new in 2.1) - determines whether to extract the common part of your bundles (for now `@babel/polyfill`) to an external file. Possible values: `false` - no extraction, `[filename]` - filename without extension. For example setting `extractRuntime` to `runtime` will result in an additional JS file with a name `runtime.js` located in your `paths.output.js` directory. This setting is useful when you have multiple bundles with a common part (such as `@babel/polyfill`). This setting will be improved in future versions to allow more modules to be bundled in the runtime file.
-- `extractModules` (new in 2.1) - determines whether to extract modules from `node_modules` to external files. If set to `true` there will be an additional bundle file created in your `paths.output.js` directory with a name `vendor.[yourInputJSEntryFileName].js`. When used with proper content hashing in the bundle file names, can speed up the page load as the user wil download only the updated bundle, not the runtime and the modules. `extractRuntime` can be used in conjunction with `extractModules` as well. __Important__: If `extractRuntime` is enabled and no files from `node_modules` are imported, the vendor JS file will not be created (only the runtime file).
+- `extractModules` (new in 2.1) - determines whether to extract modules from `node_modules` to external files. If set to `true` there will be an additional bundle file created in your `paths.output.js` directory with a name `vendor.[yourInputJSEntryFileName].js`. When used with proper content hashing in the bundle file names, can speed up the page load as the user wil download only the updated bundle, not the runtime and the modules. `extractRuntime` can be used in conjunction with `extractModules` as well. __Important__: If `extractRuntime` is enabled and no files from `node_modules` are imported, the vendor JS file will not be created (only the runtime file). If there are multiple entry points, `webpack` considers all the modules as shared and prepares the bundles in an alphabetical order. So if two of the entry points are using `package1` but only the second one uses `package2`, the first vendor bundle will contain `package1` and the latter will contain `package2`. So basically the second entry point will also need a vendor bundle for the first entry point. To have two completely separated vendor bundles, you need to run G-Build (and `webpack`) twice, with separate setups. This can be achieved using `-c` command line parameter.
+- `usagePolyfills` (new in 3.0) - when `true` enables usage-based polyfills (new `babel` feature, quite stable starting from Babel 7.4). When `false` adds classic `@babel/polyfill` (based on `targetBrowsers`, using `@babel/preset-env`) to all JS scripts (default behavior for G-Build <3.0). This setting can dramatically decrease vendor modules overhead and overall JS file size. For more information: [an article regarding core-js 3](https://github.com/zloirock/core-js/blob/master/docs/2019-03-19-core-js-3-babel-and-a-look-into-the-future.md) and [babel-preset-env documentation](https://babeljs.io/docs/en/babel-preset-env).
+- `coreJsVersion` (new in 3.0) - used only in conjunction with `usagePolyfills` set to `true`. Specifies which version of `core-js` has to be used for polyfills. The package itself (with a corresponding version) has to be installed manually as a dependency to your project (optional peer dependency).
 - `modules`
   - `modules.externals` - specifies external modules available in the global JS namespace. Example usage scenario: assuming that `jquery` is included in the HTML file from the CDN, the module shouldn't be bundled any more. In this case we set up a key-value array where the key specifies the module name and the value specifies the global variable under which the module is available. In this case the setting should be set to:
   ```json5
@@ -176,6 +235,8 @@ The default `webpack` configuration looks like this:
   "enableBundleAnalyzerServer": false,
   "extractRuntime": false,
   "extractModules": false,
+  "usagePolyfills": true,
+  "coreJsVersion": 3,
   "modules": {
     "externals": {},
     "alias": {}
@@ -238,6 +299,22 @@ The variable will be accessible in EJS file using `<%= someVar %>`.
 
 Default setting is `{}`.
 
+##### `bubbleNotifications`
+Specifies which system notifications should be displayed when G-Build is compiling. Default settings:
+```json
+{
+  "js": true,
+  "styles": true,
+  "ejs": true
+}
+```
+
+- `js` notifications are displayed when JavaScript/TypeScript errors happen, linting fails or first successful compilation occured
+- `styles` notifications are displayed if SCSS compilation and style linting fail
+- `ejs` notifications deal with EJS compilation failures
+
+The notifications might be helpful when G-Build runs in a minimized console window.
+
 #### Configuration file: `tsconfig.json`
 TypeScript compiler configuration file. The following settings are considered as recommended (due to the usage of `webpack` for module resolution and `babel` for ES6 to ES5 transpiling):
 ```json5
@@ -251,7 +328,8 @@ TypeScript compiler configuration file. The following settings are considered as
      "pretty": true,
      "sourceMap": true,
      "experimentalDecorators": true,
-     "jsx": "preserve"
+     "jsx": "preserve",
+     "resolveJsonModule": true
    }
  }
 ```
@@ -275,16 +353,6 @@ TypeScript needs to be informed that exports from .vue files are of type `Vue`. 
 declare module "*.vue" {
   import Vue from "vue";
   export default Vue;
-}
-```
-
-__How to be able to import .json files into TypeScript files?__
-
-This is similar issue to the one above. In this case no type is declared in .json file so we have to set it manually - also using a shim (usually we keep it in `/shims/json.d.ts`) containing:
-```typescript
-declare module "*.json" {
-  const data: any;
-  export default data;
 }
 ```
 

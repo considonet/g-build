@@ -15,14 +15,17 @@ module.exports = {
 
   },
 
-  autoprefixer: {},
+  autoprefixer: null,
+  postcssPresetEnv: {},
+  flexbugs: {},
 
   browsersync: {
     spa: false,
     port: 3000,
     openBrowser: true,
     urlRewrites: [],
-    mode: "auto"
+    mode: "auto",
+    notify: true
   },
 
   webpack: {
@@ -30,6 +33,8 @@ module.exports = {
     enableBundleAnalyzerServer: false,
     extractRuntime: false,
     extractModules: false,
+    usagePolyfills: true,
+    coreJsVersion: 3,
     modules: {
       externals: {},
       alias: {}
@@ -41,12 +46,12 @@ module.exports = {
     scss: false
   },
 
-  fontastic: {
-  },
+  fontastic: {},
 	
 	customWatchers: [],
 
   optimizeAssets: true,
+  webpSupport: false,
   cleanDirectories: {
     css: true,
     js: true,
@@ -54,6 +59,12 @@ module.exports = {
     ejs: false
   },
   ejsVars: {},
+
+  bubbleNotifications: {
+    js: true,
+    styles: true,
+    ejs: true
+  },
 
   php: false,
 
