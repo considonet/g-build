@@ -1,4 +1,4 @@
-# G-Build 3.0
+# G-Build 3.1
 > A simple front-end building tool built on top of gulp and webpack
 
 Licence: MIT
