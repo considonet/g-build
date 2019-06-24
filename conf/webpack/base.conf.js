@@ -59,7 +59,7 @@ if(config.webpack.extractRuntime) {
   if(config.webpack.usagePolyfills) {
     entries[config.webpack.extractRuntime] = [];
   } else {
-    entries[config.webpack.extractRuntime] = ["@babel/polyfill"];
+    entries[config.webpack.extractRuntime] = ["core-js/stable", "regenerator-runtime/runtime"];
   }
 
   Object.keys(config.jsEntries).forEach(appFile => {
@@ -79,7 +79,7 @@ if(config.webpack.extractRuntime) {
   } else {
 
     Object.keys(config.jsEntries).forEach(appFile => {
-      entries[config.jsEntries[appFile]] = ["@babel/polyfill", path.join(process.cwd(), config.paths.input.js, appFile)]
+      entries[config.jsEntries[appFile]] = ["core-js/stable", "regenerator-runtime/runtime", path.join(process.cwd(), config.paths.input.js, appFile)]
     });
 
   }
