@@ -27,7 +27,6 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/plugin-transform-runtime": "^7.4.4",
-    "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "@babel/runtime": "^7.4.5",
@@ -78,8 +77,8 @@
     "xml2js": "^0.4.19"
   },
   "optionalDependencies": {
-    "vue-template-compiler": "^2.6.10",
-    "core-js": "^2.6.5 || ^3.0.1"
+    "core-js": "^2.6.5 || ^3.0.1",
+    "vue-template-compiler": "^2.6.10"
   },
   "engines": {
     "node": ">=8.0.0"
