@@ -8,9 +8,13 @@ const WebpackNotifierPlugin = require('webpack-notifier');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 const babelPresetEnvConfig = {
-  "modules": false,
-  "targets": {browsers: config.targetBrowsers }
+  "modules": false
 };
+
+// TODO: remove in 4.x
+if(config.targetBrowsers !== false) {
+  babelPresetEnvConfig.targets = { browsers: config.targetBrowsers }
+}
 
 if(config.webpack.usagePolyfills) {
   babelPresetEnvConfig.useBuiltIns = "usage";
