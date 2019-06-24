@@ -1,4 +1,13 @@
 ## Changelog
+__3.1.1__ (2019/06/24)
+* Unused deprecated dependency removed (to silence the warnings during package installation) 
+
+__3.1.0__ (2019/06/24)
+* `targetBrowsers` deprecated in favor of official BrowsersList way of providing the config
+* Static polyfill handling in a recommended Babel 7.4 way
+* Docs update
+* Dependencies upgrade
+
 __3.0.0__ (2019/04/22)
 * Breaking change: `vue-template-compiler` now a peer dependency (so there shouldn't be problems with incompatible `vue` versions anymore)
 * Breaking change: `hard-source-webpack-plugin` removed
