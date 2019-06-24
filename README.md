@@ -1,4 +1,4 @@
-# G-Build 3.0
+# G-Build 3.1
 > A simple front-end building tool built on top of gulp and webpack
 
 Licence: MIT
@@ -128,13 +128,13 @@ Required setting. Defines entry points for your app. Can contain more than one J
 ```
 
 ##### `targetBrowsers`
-Required setting. Specifies the browser compatibility for `babel` and `autoprefixer` conforming with the standard configuration syntax. As of 2018, (in our opinion) the recommended setting is `["ie >= 9", "> 1%", "iOS 8"]`. Please refer to [BrowserList docs](https://github.com/browserslist/browserslist#queries) for more details.
+*Deprecated starting from 4.x. Please use official [BrowsersList query methods](https://github.com/browserslist/browserslist#queries) instead!* Required setting if no BrowsersList config key/file present. Specifies the browser compatibility for `babel` and `autoprefixer`/`postcss` conforming with the standard configuration syntax. As of 2018, (in our opinion) the recommended setting is `["ie >= 9", "> 1%", "iOS 8"]`. Please refer to [BrowsersList docs](https://github.com/browserslist/browserslist#queries) for more details.
 
 ##### `autoprefixer`
-This key contains `autoprefixer` settings conforming with the standard configuration syntax. The default setting is `{}`. Please refer to [autoprefixer GitHub page](https://github.com/postcss/autoprefixer) for more details. Because of common `targetBrowsers` setting, G-Build automatically sets up `browsers` setting for Autoprefixer so usually no additional configuration is required.
+This key contains `autoprefixer` settings conforming with the standard configuration syntax. The default setting is `{}`. Please refer to [autoprefixer GitHub page](https://github.com/postcss/autoprefixer) for more details. Do not set up `browsers` key, it will be taken from `BrowsersList` config.
 
 ##### `postcssPresetEnv`
-This key contains `postcss-preset-env` settings conforming with the standard configuration syntax. The default setting is `{}` which basically loads *stage 2* polyfills. Please refer to [postcss-preset-env GitHub page](https://github.com/csstools/postcss-preset-env) for more details. Because of common `targetBrowsers` setting, G-Build automatically sets up `browsers` setting for `postcss-preset-env`. If `autoprefixer` settings are set using the key above, they will be included into this config (because starting from version 3.0 `autoprefixer` is loaded via this plugin). If `stage` is set to 0, no polyfills are added.
+This key contains `postcss-preset-env` settings conforming with the standard configuration syntax. The default setting is `{}` which basically loads *stage 2* polyfills. Please refer to [postcss-preset-env GitHub page](https://github.com/csstools/postcss-preset-env) for more details. Do not set up `browsers` key, it will be taken from `BrowsersList` config. If `autoprefixer` settings are set using the key above, they will be included into this config (because starting from version 3.0 `autoprefixer` is loaded via this plugin). If `stage` is set to 0, no polyfills are added.
 
 ##### `flexbugs`
 This key contains `postcss-flexbugs-fixed` settings conforming with the standard configuration syntax. The default setting is `{}` which means that all flexbox polyfills are supported. Please refer to [PostCSS Flexbugs Fixes GitHub page](https://github.com/luisrudge/postcss-flexbugs-fixes) for more details.
@@ -177,7 +177,7 @@ body.webp .myimage { background-image: url('./img/image.webp'); }
 To disable the rewrite in a specific ruleset, add a comment `/* no-webp */` inside.
 As this is quite a new feature, it is recommended to experiment, which setup works best for your project.
 
-Because of a spotty browser support, the CSS rulesets rely on browser feature detection. This can be achieved using [Modernizr](https://modernizr.com/) or [supports-webp](https://www.npmjs.com/package/supports-webp) npm package. The `noJsClass` is by default set to `null` so the website doesn't force the device to download non-webp contents (to save the amount of data transferred). However, no image will be displayed until JS code gets executed. If it's crucial to serve the contents for JS-disabled browsers, this setting might be useful.
+Because of a spotty browser support, the CSS rulesets rely on browser feature detection. This can be achieved easily using our package: [@considonet/support-classes](https://www.npmjs.com/package/@considonet/support-classes). If you don't like it, you can also use [Modernizr](https://modernizr.com/) or [supports-webp](https://www.npmjs.com/package/supports-webp) npm package. The `noJsClass` is by default set to `null` so the website doesn't force the device to download non-webp contents (to save the amount of data transferred). However, no image will be displayed until JS code gets executed. If it's crucial to serve the contents for JS-disabled browsers, this setting might be useful.
 
 ##### `browsersync`
 Specifies `browser-sync`-specific configuration. To make things really simple, this setting doesn't follow any standards for `browser-sync` config - the following keys are supported:
@@ -217,7 +217,7 @@ Specifies `webpack`-specific configuration. Because G-Build automatically genera
 - `enableBundleAnalyzerServer` - determines whether to run a diagnostic `webpack-bundle-analyzer` server to understand your JS bundle structure and sizes.
 - `extractRuntime` (new in 2.1) - determines whether to extract the common part of your bundles (for now `@babel/polyfill`) to an external file. Possible values: `false` - no extraction, `[filename]` - filename without extension. For example setting `extractRuntime` to `runtime` will result in an additional JS file with a name `runtime.js` located in your `paths.output.js` directory. This setting is useful when you have multiple bundles with a common part (such as `@babel/polyfill`). This setting will be improved in future versions to allow more modules to be bundled in the runtime file.
 - `extractModules` (new in 2.1) - determines whether to extract modules from `node_modules` to external files. If set to `true` there will be an additional bundle file created in your `paths.output.js` directory with a name `vendor.[yourInputJSEntryFileName].js`. When used with proper content hashing in the bundle file names, can speed up the page load as the user wil download only the updated bundle, not the runtime and the modules. `extractRuntime` can be used in conjunction with `extractModules` as well. __Important__: If `extractRuntime` is enabled and no files from `node_modules` are imported, the vendor JS file will not be created (only the runtime file). If there are multiple entry points, `webpack` considers all the modules as shared and prepares the bundles in an alphabetical order. So if two of the entry points are using `package1` but only the second one uses `package2`, the first vendor bundle will contain `package1` and the latter will contain `package2`. So basically the second entry point will also need a vendor bundle for the first entry point. To have two completely separated vendor bundles, you need to run G-Build (and `webpack`) twice, with separate setups. This can be achieved using `-c` command line parameter.
-- `usagePolyfills` (new in 3.0) - when `true` enables usage-based polyfills (new `babel` feature, quite stable starting from Babel 7.4). When `false` adds classic `@babel/polyfill` (based on `targetBrowsers`, using `@babel/preset-env`) to all JS scripts (default behavior for G-Build <3.0). This setting can dramatically decrease vendor modules overhead and overall JS file size. For more information: [an article regarding core-js 3](https://github.com/zloirock/core-js/blob/master/docs/2019-03-19-core-js-3-babel-and-a-look-into-the-future.md) and [babel-preset-env documentation](https://babeljs.io/docs/en/babel-preset-env).
+- `usagePolyfills` (new in 3.0) - when `true` enables usage-based polyfills (new `babel` feature, quite stable starting from Babel 7.4). When `false` adds standard `core-js/stable` and `regenerator-runtime/runtime` (before Babel 7.4.0 `@babel/polyfill`) (using `@babel/preset-env`) to all JS scripts (default behavior for G-Build <3.0). This setting can dramatically decrease vendor modules overhead and overall JS file size. For more information: [an article regarding core-js 3](https://github.com/zloirock/core-js/blob/master/docs/2019-03-19-core-js-3-babel-and-a-look-into-the-future.md) and [babel-preset-env documentation](https://babeljs.io/docs/en/babel-preset-env).
 - `coreJsVersion` (new in 3.0) - used only in conjunction with `usagePolyfills` set to `true`. Specifies which version of `core-js` has to be used for polyfills. The package itself (with a corresponding version) has to be installed manually as a dependency to your project (optional peer dependency).
 - `modules`
   - `modules.externals` - specifies external modules available in the global JS namespace. Example usage scenario: assuming that `jquery` is included in the HTML file from the CDN, the module shouldn't be bundled any more. In this case we set up a key-value array where the key specifies the module name and the value specifies the global variable under which the module is available. In this case the setting should be set to:
@@ -264,7 +264,7 @@ Default `php` setting is `false`. This setting can be overridden with `browsersy
 ##### `lint`
 Specifies whether the code should be linted. This supports the following settings:
 - `js` - if set to `true` `tslint` will run to check compiled `.ts` and `.js` files. These also include all the variants such as `.vue` or `.jsx` files. `tslint.json` config file has to be placed in the same directory as `package.json`. Default: `true` (it was not possible to disable it before version 2.4).
-- `scss` - if set to `true` `stylelint` will run to check your SCSS files. The rules for `stylelint` should be defined in `.stylelintrc` file (all formats are supported) in the same directory as `package.json` file, according to the [documentation](https://stylelint.io/user-guide/configuration/). If the linting fails, the code still remains compiled. For compatibility reasons the default for version 2.x is `false`. It will be `true` by default starting from G-Build 3.0.
+- `scss` - if set to `true` `stylelint` will run to check your SCSS files. The rules for `stylelint` should be defined in `.stylelintrc` file (all formats are supported) in the same directory as `package.json` file, according to the [documentation](https://stylelint.io/user-guide/configuration/). If the linting fails, the code still remains compiled. For compatibility reasons the default for version 2.x and 3.x is `false`. It will be `true` by default starting from G-Build 4.0.
 
 ##### `optimizeAssets`
 Feature since 2.4. Specifies whether during the production build the image assets should be optimized (losslessly compressed). This is should be harmless for any files. Optimization is done using `imagemin` and applies to GIF, JPEG, PNG and SVG files. Default is `true`.
@@ -333,6 +333,10 @@ TypeScript compiler configuration file. The following settings are considered as
    }
  }
 ```
+
+#### BrowsersList configuration
+
+Starting from G-Build 3.1 replaces `targetBrowsers` config key. Please follow [BrowsersList docs](https://github.com/browserslist/browserslist#queries) for more details. You can use package.json `browsersList` key or a dedicated config file.
 
 #### Optional configuration file: `tslint.json`
 `tslint` configuration file. Customized depending on your personal preferences. Please make sure to point this file in your IDE. Not required when `lint.js` is set to `false`. 

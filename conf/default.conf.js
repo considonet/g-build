@@ -46,6 +46,9 @@ module.exports = {
     scss: false
   },
 
+  // TODO: remove in 4.x
+  targetBrowsers: false,
+
   fontastic: {},
 	
 	customWatchers: [],
