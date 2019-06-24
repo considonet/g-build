@@ -177,7 +177,7 @@ body.webp .myimage { background-image: url('./img/image.webp'); }
 To disable the rewrite in a specific ruleset, add a comment `/* no-webp */` inside.
 As this is quite a new feature, it is recommended to experiment, which setup works best for your project.
 
-Because of a spotty browser support, the CSS rulesets rely on browser feature detection. This can be achieved using [Modernizr](https://modernizr.com/) or [supports-webp](https://www.npmjs.com/package/supports-webp) npm package. The `noJsClass` is by default set to `null` so the website doesn't force the device to download non-webp contents (to save the amount of data transferred). However, no image will be displayed until JS code gets executed. If it's crucial to serve the contents for JS-disabled browsers, this setting might be useful.
+Because of a spotty browser support, the CSS rulesets rely on browser feature detection. This can be achieved easily using our package: [@considonet/support-classes](https://www.npmjs.com/package/@considonet/support-classes). If you don't like it, you can also use [Modernizr](https://modernizr.com/) or [supports-webp](https://www.npmjs.com/package/supports-webp) npm package. The `noJsClass` is by default set to `null` so the website doesn't force the device to download non-webp contents (to save the amount of data transferred). However, no image will be displayed until JS code gets executed. If it's crucial to serve the contents for JS-disabled browsers, this setting might be useful.
 
 ##### `browsersync`
 Specifies `browser-sync`-specific configuration. To make things really simple, this setting doesn't follow any standards for `browser-sync` config - the following keys are supported:
@@ -264,7 +264,7 @@ Default `php` setting is `false`. This setting can be overridden with `browsersy
 ##### `lint`
 Specifies whether the code should be linted. This supports the following settings:
 - `js` - if set to `true` `tslint` will run to check compiled `.ts` and `.js` files. These also include all the variants such as `.vue` or `.jsx` files. `tslint.json` config file has to be placed in the same directory as `package.json`. Default: `true` (it was not possible to disable it before version 2.4).
-- `scss` - if set to `true` `stylelint` will run to check your SCSS files. The rules for `stylelint` should be defined in `.stylelintrc` file (all formats are supported) in the same directory as `package.json` file, according to the [documentation](https://stylelint.io/user-guide/configuration/). If the linting fails, the code still remains compiled. For compatibility reasons the default for version 2.x is `false`. It will be `true` by default starting from G-Build 3.0.
+- `scss` - if set to `true` `stylelint` will run to check your SCSS files. The rules for `stylelint` should be defined in `.stylelintrc` file (all formats are supported) in the same directory as `package.json` file, according to the [documentation](https://stylelint.io/user-guide/configuration/). If the linting fails, the code still remains compiled. For compatibility reasons the default for version 2.x and 3.x is `false`. It will be `true` by default starting from G-Build 4.0.
 
 ##### `optimizeAssets`
 Feature since 2.4. Specifies whether during the production build the image assets should be optimized (losslessly compressed). This is should be harmless for any files. Optimization is done using `imagemin` and applies to GIF, JPEG, PNG and SVG files. Default is `true`.
