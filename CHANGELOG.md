@@ -1,4 +1,8 @@
 ## Changelog
+__4.0.0__ (TBD)
+* TypeScript files compilation now done via `babel`. The transition should be as seamless as possible and no changes should be done to the existing projects.
+* `typescript` now an optional peer dependency
+
 __3.1.1__ (2019/06/24)
 * Unused deprecated dependency removed (to silence the warnings during package installation) 
 
