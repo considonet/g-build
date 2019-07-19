@@ -131,11 +131,11 @@ if(config.lint.js) {
     oneOf: [
       {
         resourceQuery: /^\?vue/,
-        loader: 'tslint-loader',
+        loader: 'eslint-loader',
         options: {}
       },
       {
-        loader: 'tslint-loader',
+        loader: 'eslint-loader',
         enforce: 'pre',
         options: {}
       }
