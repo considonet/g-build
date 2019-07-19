@@ -2,6 +2,8 @@
 __4.0.0__ (TBD)
 * TypeScript files compilation now done via `babel`. The transition should be as seamless as possible and no changes should be done to the existing projects.
 * `typescript` now an optional peer dependency
+* Babel configuration now moved to the official config file or section in package.json. Thanks to this it can be used with other tools relying on `@babel/*` packages (such as `jest`).
+* Dependencies upgrade
 
 __3.1.1__ (2019/06/24)
 * Unused deprecated dependency removed (to silence the warnings during package installation) 

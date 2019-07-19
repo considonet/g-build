@@ -1,11 +1,9 @@
-# G-Build 3.1
+# G-Build 4.0
 > A simple front-end building tool built on top of gulp and webpack
 
 Licence: MIT
 
-Copyright (C) 2017-2019 ConsidoNet Solutions
-
-www.considonet.com
+Copyright (C) 2017-2019 Paweł Gabryelewicz | www.considonet.com
 
 ## What is G-Build?
 G-Build is a front-end building automation tool build on top of `webpack` and `gulp`. It works in a similar way to scaffolds done with tools such as `@vue/cli`.
@@ -26,7 +24,7 @@ Please refer to the configuration manual below for more details. Each of these 4
 
 ### General
 - Cross platform (tested and actively used on Windows, Mac and Linux)
-- 1-minute configuration
+- 5-minutes configuration
 
 ### JavaScript and related tasks
 - ES6 to ES5 transpilation using `babel`
@@ -127,9 +125,6 @@ Required setting. Defines entry points for your app. Can contain more than one J
 }
 ```
 
-##### `targetBrowsers`
-*Deprecated starting from 4.x. Please use official [BrowsersList query methods](https://github.com/browserslist/browserslist#queries) instead!* Required setting if no BrowsersList config key/file present. Specifies the browser compatibility for `babel` and `autoprefixer`/`postcss` conforming with the standard configuration syntax. As of 2018, (in our opinion) the recommended setting is `["ie >= 9", "> 1%", "iOS 8"]`. Please refer to [BrowsersList docs](https://github.com/browserslist/browserslist#queries) for more details.
-
 ##### `autoprefixer`
 This key contains `autoprefixer` settings conforming with the standard configuration syntax. The default setting is `{}`. Please refer to [autoprefixer GitHub page](https://github.com/postcss/autoprefixer) for more details. Do not set up `browsers` key, it will be taken from `BrowsersList` config.
 
@@ -217,8 +212,6 @@ Specifies `webpack`-specific configuration. Because G-Build automatically genera
 - `enableBundleAnalyzerServer` - determines whether to run a diagnostic `webpack-bundle-analyzer` server to understand your JS bundle structure and sizes.
 - `extractRuntime` (new in 2.1) - determines whether to extract the common part of your bundles (for now `@babel/polyfill`) to an external file. Possible values: `false` - no extraction, `[filename]` - filename without extension. For example setting `extractRuntime` to `runtime` will result in an additional JS file with a name `runtime.js` located in your `paths.output.js` directory. This setting is useful when you have multiple bundles with a common part (such as `@babel/polyfill`). This setting will be improved in future versions to allow more modules to be bundled in the runtime file.
 - `extractModules` (new in 2.1) - determines whether to extract modules from `node_modules` to external files. If set to `true` there will be an additional bundle file created in your `paths.output.js` directory with a name `vendor.[yourInputJSEntryFileName].js`. When used with proper content hashing in the bundle file names, can speed up the page load as the user wil download only the updated bundle, not the runtime and the modules. `extractRuntime` can be used in conjunction with `extractModules` as well. __Important__: If `extractRuntime` is enabled and no files from `node_modules` are imported, the vendor JS file will not be created (only the runtime file). If there are multiple entry points, `webpack` considers all the modules as shared and prepares the bundles in an alphabetical order. So if two of the entry points are using `package1` but only the second one uses `package2`, the first vendor bundle will contain `package1` and the latter will contain `package2`. So basically the second entry point will also need a vendor bundle for the first entry point. To have two completely separated vendor bundles, you need to run G-Build (and `webpack`) twice, with separate setups. This can be achieved using `-c` command line parameter.
-- `usagePolyfills` (new in 3.0) - when `true` enables usage-based polyfills (new `babel` feature, quite stable starting from Babel 7.4). When `false` adds standard `core-js/stable` and `regenerator-runtime/runtime` (before Babel 7.4.0 `@babel/polyfill`) (using `@babel/preset-env`) to all JS scripts (default behavior for G-Build <3.0). This setting can dramatically decrease vendor modules overhead and overall JS file size. For more information: [an article regarding core-js 3](https://github.com/zloirock/core-js/blob/master/docs/2019-03-19-core-js-3-babel-and-a-look-into-the-future.md) and [babel-preset-env documentation](https://babeljs.io/docs/en/babel-preset-env).
-- `coreJsVersion` (new in 3.0) - used only in conjunction with `usagePolyfills` set to `true`. Specifies which version of `core-js` has to be used for polyfills. The package itself (with a corresponding version) has to be installed manually as a dependency to your project (optional peer dependency).
 - `modules`
   - `modules.externals` - specifies external modules available in the global JS namespace. Example usage scenario: assuming that `jquery` is included in the HTML file from the CDN, the module shouldn't be bundled any more. In this case we set up a key-value array where the key specifies the module name and the value specifies the global variable under which the module is available. In this case the setting should be set to:
   ```json5
@@ -235,8 +228,6 @@ The default `webpack` configuration looks like this:
   "enableBundleAnalyzerServer": false,
   "extractRuntime": false,
   "extractModules": false,
-  "usagePolyfills": true,
-  "coreJsVersion": 3,
   "modules": {
     "externals": {},
     "alias": {}
@@ -331,12 +322,44 @@ TypeScript compiler configuration file. The following settings are considered as
      "jsx": "preserve",
      "resolveJsonModule": true
    }
- }
+}
 ```
 
 #### BrowsersList configuration
 
-Starting from G-Build 3.1 replaces `targetBrowsers` config key. Please follow [BrowsersList docs](https://github.com/browserslist/browserslist#queries) for more details. You can use package.json `browsersList` key or a dedicated config file.
+Starting from G-Build 4.0 `targetBrowsers` config key is not supported. Please follow [BrowsersList docs](https://github.com/browserslist/browserslist#queries) for more details. You can use package.json `browsersList` key or a dedicated configuration file.
+
+#### Babel configuration
+
+Starting from G-Build 4.0 `webpack.coreJsVersion` and `webpack.usagePolyfills` settings are removed from the G-Build config file and are no longer supported. Instead please use [Babel configuration](https://babeljs.io/docs/en/configuration) to handle all the settings related to JS and TS transpilation).
+
+To maintain compatibility with the setup of G-Build prior to version 4.0 the following settings should be sufficient:
+
+```json
+{
+  "plugins": [
+    "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-syntax-dynamic-import",
+    [ "@babel/plugin-proposal-decorators", { "legacy": true } ],
+    [ "@babel/plugin-proposal-class-properties", { "loose": true } ]
+  ],
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "modules": "auto",
+        "useBuiltIns": "usage",
+        "corejs": 3
+      }
+
+    ],
+    "@babel/preset-react",
+    "@babel/preset-typescript"
+  ]
+}
+```
+
+Make sure to have all the dependencies installed, including `@babel/core` itself. G-Build supports Babel 7 and newer. 
 
 #### Optional configuration file: `tslint.json`
 `tslint` configuration file. Customized depending on your personal preferences. Please make sure to point this file in your IDE. Not required when `lint.js` is set to `false`. 

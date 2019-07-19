@@ -23,16 +23,6 @@
   "license": "MIT",
   "repository": "github:considonet/g-build",
   "dependencies": {
-    "@babel/core": "^7.5.5",
-    "@babel/plugin-proposal-class-properties": "^7.5.5",
-    "@babel/plugin-proposal-decorators": "^7.4.4",
-    "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
-    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-    "@babel/plugin-transform-runtime": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
-    "@babel/preset-react": "^7.0.0",
-    "@babel/preset-typescript": "^7.3.3",
-    "@babel/runtime": "^7.5.5",
     "@considonet/g-fontasticbundler": "^1.2.1",
     "@considonet/g-logger": "^1.1.1",
     "@considonet/g-scssimporter": "^1.1.0",
@@ -78,6 +68,7 @@
     "xml2js": "^0.4.19"
   },
   "optionalDependencies": {
+    "@babel/core": "^7.0.0",
     "core-js": "^2.6.5 || ^3.1.4",
     "vue-template-compiler": "^2.6.10",
     "typescript": ">=2.3.0-dev || >=2.4.0-dev || >=2.5.0-dev || >=2.6.0-dev || >=2.7.0-dev || >=2.8.0-dev || >=2.9.0-dev || >=3.0.0-dev || >= 3.1.0-dev || >= 3.2.0-dev"
