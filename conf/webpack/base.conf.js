@@ -73,9 +73,6 @@ if(babelConfig !== null && typeof babelConfig.presets !== "undefined") {
 
 }
 
-console.log(babelConfig);
-console.log("USAGE POLY", usagePolyfills);
-
 if(config.webpack.extractRuntime) {
 
   if(usagePolyfills) {
