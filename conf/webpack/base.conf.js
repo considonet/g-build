@@ -98,26 +98,6 @@ if(config.webpack.extractRuntime) {
 }
 
 const rules = [
-  /*{
-    test: /\.tsx?$/,
-    exclude: file => (
-      /node_modules/.test(file) &&
-      !/\.vue\.js/.test(file)
-    ),
-    use: [
-      {
-        loader: 'babel-loader',
-        options: babelConfig
-      },
-      {
-        loader: 'ts-loader',
-        options: {
-          transpileOnly: true,
-          appendTsSuffixTo: [/\.vue$/]
-        }
-      }
-    ]
-  },*/
   {
     test: /\.json5$/,
     loader: 'json5-loader'
@@ -132,7 +112,7 @@ const rules = [
     options: babelConfig
   }
 ];
-/*
+
 if(config.lint.js) {
   rules.push({
     test: /\.js$/,
@@ -151,7 +131,7 @@ if(config.lint.js) {
     ]
   });
 }
-*/
+
 rules.push({
   test: /\.vue$/,
   loader: 'vue-loader'
@@ -172,25 +152,21 @@ module.exports = () => ({
     const plugins = [];
     plugins.push(new VueLoaderPlugin());
 
-    /*
     plugins.push(new ForkTsCheckerWebpackPlugin({
       async: true,
       silent: false,
       tslint: config.lint.js,
       vue: true
     }));
-    */
 
     // Optional notifications
     if(config.bubbleNotifications.js) {
 
-      /*
       plugins.push(new ForkTsCheckerNotifierWebpackPlugin({
         title: 'G-Build (TS)',
         excludeWarnings: false,
         skipSuccessful: true
       }));
-       */
 
       plugins.push(new WebpackNotifierPlugin({
         title: 'G-Build (JS)',

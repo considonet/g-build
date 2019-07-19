@@ -1,6 +1,6 @@
 {
   "name": "@considonet/g-build",
-  "version": "3.2.0-pre",
+  "version": "4.0.0-pre",
   "description": "A simple front-end building tool built on top of gulp and webpack",
   "main": "./lib/api.js",
   "bin": {
@@ -79,7 +79,8 @@
   },
   "optionalDependencies": {
     "core-js": "^2.6.5 || ^3.1.4",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "typescript": ">=2.3.0-dev || >=2.4.0-dev || >=2.5.0-dev || >=2.6.0-dev || >=2.7.0-dev || >=2.8.0-dev || >=2.9.0-dev || >=3.0.0-dev || >= 3.1.0-dev || >= 3.2.0-dev"
   },
   "engines": {
     "node": ">=8.0.0"
