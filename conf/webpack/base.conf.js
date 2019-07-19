@@ -1,42 +1,12 @@
 const webpack = require('webpack');
 const config = require("../../lib/api").getConfig();
 const path = require('path');
+const fs = require('fs');
 
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const ForkTsCheckerNotifierWebpackPlugin = require('fork-ts-checker-notifier-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-
-const babelPresetEnvConfig = {
-  "modules": false
-};
-
-// TODO: remove in 4.x
-if(config.targetBrowsers !== false) {
-  babelPresetEnvConfig.targets = { browsers: config.targetBrowsers }
-}
-
-if(config.webpack.usagePolyfills) {
-  babelPresetEnvConfig.useBuiltIns = "usage";
-  babelPresetEnvConfig.corejs = config.webpack.coreJsVersion;
-}
-
-const babelConfig = {
-  "plugins": [
-    "@babel/plugin-proposal-object-rest-spread",
-    "@babel/plugin-syntax-dynamic-import",
-    [ "@babel/plugin-proposal-decorators", { legacy: true } ],
-    [ "@babel/plugin-proposal-class-properties", { loose: true } ]
-  ],
-  "presets": [
-    [
-      "@babel/preset-env",
-      babelPresetEnvConfig
-    ],
-    "@babel/preset-react",
-    "@babel/preset-typescript"
-  ]
-};
 
 const splitChunks = {
   automaticNameDelimiter: ".",
@@ -61,9 +31,54 @@ const splitChunks = {
 
 const entries = {};
 
+// Resolving babel config to determine usagePolyfills setting
+let babelConfig = null;
+
+const babelPaths = [
+  path.join(process.cwd(), "babel.config.js"),
+  path.join(process.cwd(), ".babelrc.js"),
+  path.join(process.cwd(), ".babelrc"),
+];
+
+babelPaths.some(p => {
+  if(fs.existsSync(p)) {
+    babelConfig = require(p);
+    return true;
+  }
+});
+
+if(babelConfig === null) {
+  const packageJson = require(path.join(process.cwd(), "package.json"));
+  if(typeof packageJson.babel !== "undefined") {
+    babelConfig = packageJson.babel;
+  }
+}
+
+let usagePolyfills = false;
+
+if(babelConfig !== null && typeof babelConfig.presets !== "undefined") {
+
+  babelConfig.presets.some(preset => {
+    if(
+      typeof preset === "object" &&
+      preset[0] === "@babel/preset-env" &&
+      typeof preset[1] === "object" &&
+      typeof preset[1].useBuiltIns !== "undefined" &&
+      preset[1].useBuiltIns === "usage")
+    {
+      usagePolyfills = true;
+      return true;
+    }
+  })
+
+}
+
+console.log(babelConfig);
+console.log("USAGE POLY", usagePolyfills);
+
 if(config.webpack.extractRuntime) {
 
-  if(config.webpack.usagePolyfills) {
+  if(usagePolyfills) {
     entries[config.webpack.extractRuntime] = [];
   } else {
     entries[config.webpack.extractRuntime] = ["core-js/stable", "regenerator-runtime/runtime"];
@@ -77,7 +92,7 @@ if(config.webpack.extractRuntime) {
 
 } else {
 
-  if(config.webpack.usagePolyfills) {
+  if(usagePolyfills) {
 
     Object.keys(config.jsEntries).forEach(appFile => {
       entries[config.jsEntries[appFile]] = [path.join(process.cwd(), config.paths.input.js, appFile)]
@@ -108,8 +123,7 @@ const rules = [
       /node_modules/.test(file) &&
       !/\.vue\.js/.test(file)
     ),
-    loader: 'babel-loader',
-    options: babelConfig
+    loader: 'babel-loader'
   }
 ];
 

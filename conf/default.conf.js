@@ -29,12 +29,9 @@ module.exports = {
   },
 
   webpack: {
-    hardSourceCache: false,
     enableBundleAnalyzerServer: false,
     extractRuntime: false,
     extractModules: false,
-    usagePolyfills: true,
-    coreJsVersion: 3,
     modules: {
       externals: {},
       alias: {}
@@ -45,9 +42,6 @@ module.exports = {
     js: true,
     scss: false
   },
-
-  // TODO: remove in 4.x
-  targetBrowsers: false,
 
   fontastic: {},
 	
