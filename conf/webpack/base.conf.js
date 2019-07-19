@@ -166,7 +166,7 @@ module.exports = () => ({
     plugins.push(new ForkTsCheckerWebpackPlugin({
       async: true,
       silent: false,
-      tslint: config.lint.js,
+      eslint: config.lint.js,
       vue: true
     }));
 
