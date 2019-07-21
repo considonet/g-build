@@ -32,7 +32,7 @@ Please refer to the configuration manual below for more details. Each of these 4
 - Microsoft TypeScript 3.x support
 - React.js support (supporting JSX and TSX)
 - Vue.js support (including TypeScript support and `vue-class-component` syntax)
-- JS/TS code linting using `tslint`
+- JS/TS code linting using `eslint`
 
 ### CSS, image assets and related tasks
 - SCSS compilation with a custom smart module importer (more powerful than the default `node-sass` and `webpack` SCSS compilers - incl. support for `sass-eyeglass` module syntax).
@@ -210,8 +210,7 @@ The default `browsersync` configuration is sufficient for most of the projects a
 ##### `webpack`
 Specifies `webpack`-specific configuration. Because G-Build automatically generates a pre-set `webpack` configuration, this setting doesn't follow any standards for `webpack` config - the following keys are supported:
 - `enableBundleAnalyzerServer` - determines whether to run a diagnostic `webpack-bundle-analyzer` server to understand your JS bundle structure and sizes.
-- `extractRuntime` (new in 2.1) - determines whether to extract the common part of your bundles (for now `@babel/polyfill`) to an external file. Possible values: `false` - no extraction, `[filename]` - filename without extension. For example setting `extractRuntime` to `runtime` will result in an additional JS file with a name `runtime.js` located in your `paths.output.js` directory. This setting is useful when you have multiple bundles with a common part (such as `@babel/polyfill`). This setting will be improved in future versions to allow more modules to be bundled in the runtime file.
-- `extractModules` (new in 2.1) - determines whether to extract modules from `node_modules` to external files. If set to `true` there will be an additional bundle file created in your `paths.output.js` directory with a name `vendor.[yourInputJSEntryFileName].js`. When used with proper content hashing in the bundle file names, can speed up the page load as the user wil download only the updated bundle, not the runtime and the modules. `extractRuntime` can be used in conjunction with `extractModules` as well. __Important__: If `extractRuntime` is enabled and no files from `node_modules` are imported, the vendor JS file will not be created (only the runtime file). If there are multiple entry points, `webpack` considers all the modules as shared and prepares the bundles in an alphabetical order. So if two of the entry points are using `package1` but only the second one uses `package2`, the first vendor bundle will contain `package1` and the latter will contain `package2`. So basically the second entry point will also need a vendor bundle for the first entry point. To have two completely separated vendor bundles, you need to run G-Build (and `webpack`) twice, with separate setups. This can be achieved using `-c` command line parameter.
+- `extractModules` (new in 2.1) - determines whether to extract modules from `node_modules` to external files. If set to `true` there will be an additional bundle file created in your `paths.output.js` directory with a name `vendor.[yourInputJSEntryFileName].js`. When used with proper content hashing in the bundle file names, can speed up the page load as the user wil download only the updated bundle, not the runtime and the modules. If there are multiple entry points, `webpack` considers all the modules as shared and prepares the bundles in an alphabetical order. So if two of the entry points are using `package1` but only the second one uses `package2`, the first vendor bundle will contain `package1` and the latter will contain `package2`. So basically the second entry point will also need a vendor bundle for the first entry point. To have two completely separated vendor bundles, you need to run G-Build (and `webpack`) twice, with separate setups. This can be achieved using `-c` command line parameter.
 - `modules`
   - `modules.externals` - specifies external modules available in the global JS namespace. Example usage scenario: assuming that `jquery` is included in the HTML file from the CDN, the module shouldn't be bundled any more. In this case we set up a key-value array where the key specifies the module name and the value specifies the global variable under which the module is available. In this case the setting should be set to:
   ```json5
@@ -226,7 +225,6 @@ The default `webpack` configuration looks like this:
 {
   "hardSourceCache": false,
   "enableBundleAnalyzerServer": false,
-  "extractRuntime": false,
   "extractModules": false,
   "modules": {
     "externals": {},
@@ -333,36 +331,20 @@ Starting from G-Build 4.0 `targetBrowsers` config key is not supported. Please f
 
 Starting from G-Build 4.0 `webpack.coreJsVersion` and `webpack.usagePolyfills` settings are removed from the G-Build config file and are no longer supported. Instead please use [Babel configuration](https://babeljs.io/docs/en/configuration) to handle all the settings related to JS and TS transpilation).
 
-To maintain compatibility with the setup of G-Build prior to version 4.0 the following settings should be sufficient:
+To maintain compatibility with the setup of G-Build prior to version 4.0 we have prepared a dedicated Babel preset (`npm install` or `yarn` `@considonet/babel-preset-typescript`) that has to be installed as a project dev dependency. Then the following Babel setting should be sufficient:
 
 ```json
 {
-  "plugins": [
-    "@babel/plugin-proposal-object-rest-spread",
-    "@babel/plugin-syntax-dynamic-import",
-    [ "@babel/plugin-proposal-decorators", { "legacy": true } ],
-    [ "@babel/plugin-proposal-class-properties", { "loose": true } ]
-  ],
-  "presets": [
-    [
-      "@babel/preset-env",
-      {
-        "modules": "auto",
-        "useBuiltIns": "usage",
-        "corejs": 3
-      }
-
-    ],
-    "@babel/preset-react",
-    "@babel/preset-typescript"
-  ]
+  "presets": [ "@considonet/babel-preset-typescript", { "vue": true } ]
 }
 ```
 
 Make sure to have all the dependencies installed, including `@babel/core` itself. G-Build supports Babel 7 and newer. 
 
-#### Optional configuration file: `tslint.json`
-`tslint` configuration file. Customized depending on your personal preferences. Please make sure to point this file in your IDE. Not required when `lint.js` is set to `false`. 
+#### ESLint configuration
+
+Starting from G-Build 4.0 `eslint` is again used to lint the code, this time also for TypeScript.
+To properly handle TypeScript files, please refer to [TypeScript ESLint project docs](https://github.com/typescript-eslint/typescript-eslint). You can prepare an `.eslintrc.js` file or provide the settings via `eslint` key of package.json. ESLint configuration is not required when `lint.js` is set to `false`. 
 
 #### Optional configuration file: `.stylelintrc`
 `stylelint` configuration file. Customized depending on your personal preferences. Not required when `lint.scss` is set to `false`.
