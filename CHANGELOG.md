@@ -1,8 +1,11 @@
 ## Changelog
 __4.0.0__ (TBD)
-* TypeScript files compilation now done via `babel`. The transition should be as seamless as possible and no changes should be done to the existing projects.
-* `typescript` now an optional peer dependency
-* Babel configuration now moved to the official config file or section in package.json. Thanks to this it can be used with other tools relying on `@babel/*` packages (such as `jest`).
+* Potentially breaking change: TypeScript files compilation now done via `babel`. The transition should be as seamless as possible and no changes should be done to the existing projects.
+* Breaking change: `typescript` now an optional peer dependency
+* Breaking change: Babel configuration now moved to the official config file or section in package.json. Thanks to this it can be used with other tools relying on `@babel/*` packages (such as `jest`).
+* Breaking change: Because of the above, `webpack.usagePolyfills` setting is dropped and no polyfills are added by default. If you would like to use the old, static polyfilling solution, import `core-js/stable` and `regenerator-runtime/runtime` to your main JS entry point.
+* Breaking change: `webpack.extractRuntime` setting dropped. To mimic this behaviour a named chunk syntax has to be used in the polyfill/runtime imports (in case of not using Babel's usage-based polyfilling).
+* Breaking change: Switch back to `eslint` for both JS and TS files.
 * Dependencies upgrade
 
 __3.1.1__ (2019/06/24)
