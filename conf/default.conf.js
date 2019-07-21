@@ -30,7 +30,6 @@ module.exports = {
 
   webpack: {
     enableBundleAnalyzerServer: false,
-    extractRuntime: false,
     extractModules: false,
     modules: {
       externals: {},
