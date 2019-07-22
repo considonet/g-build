@@ -2,11 +2,13 @@
 __4.0.0__ (TBD)
 * Potentially breaking change: TypeScript files compilation now done via `babel`. The transition should be as seamless as possible and no changes should be done to the existing projects.
 * Breaking change: `typescript` now an optional peer dependency
-* Breaking change: Babel configuration now moved to the official config file or section in package.json. Thanks to this it can be used with other tools relying on `@babel/*` packages (such as `jest`).
+* Breaking change: Babel configuration now moved to the official config file or section in package.json. Thanks to this it can be used with other tools relying on `@babel/*` packages (such as `jest`). To retain compatibility with previous G-Build versions, use our `@considonet/babel-preset-typescript` package as your Babel preset.
 * Breaking change: Because of the above, `webpack.usagePolyfills` setting is dropped and no polyfills are added by default. If you would like to use the old, static polyfilling solution, import `core-js/stable` and `regenerator-runtime/runtime` to your main JS entry point.
 * Breaking change: `webpack.extractRuntime` setting dropped. To mimic this behaviour a named chunk syntax has to be used in the polyfill/runtime imports (in case of not using Babel's usage-based polyfilling).
 * Breaking change: Switch back to `eslint` for both JS and TS files.
 * Potentially breaking change: Switch from `node-sass` to [now recommended](https://sass-lang.com/dart-sass) compiler of SCSS - Dart Sass ([`sass`](https://www.npmjs.com/package/sass))
+* Breaking change: G-Build no-longer provides PostCSS plugins and no configuration is provided there. Please use official PostCSS config files to add your processors. To retain compatibility with previous G-Build versions, use `@considonet/postcss-config` with `normalize: false`.
+* Breaking change: JS linting by default is now disabled to make the initial project setup easier
 * Dependencies upgrade
 
 __3.1.1__ (2019/06/24)
