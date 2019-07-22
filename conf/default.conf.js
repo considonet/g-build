@@ -15,9 +15,7 @@ module.exports = {
 
   },
 
-  autoprefixer: null,
-  postcssPresetEnv: {},
-  flexbugs: {},
+  postcss: false,
 
   browsersync: {
     spa: false,
