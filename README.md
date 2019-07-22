@@ -305,18 +305,18 @@ The notifications might be helpful when G-Build runs in a minimized console wind
 TypeScript compiler configuration file. The following settings are considered as recommended (due to the usage of `webpack` for module resolution and `babel` for ES6 to ES5 transpiling):
 ```json5
 {
-   "compilerOptions": {
-     "noImplicitAny": true,
-     "removeComments": false,
-     "target": "es6",
-     "allowSyntheticDefaultImports": true,
-     "moduleResolution": "node",
-     "pretty": true,
-     "sourceMap": true,
-     "experimentalDecorators": true,
-     "jsx": "preserve",
-     "resolveJsonModule": true,
-   }
+  "compilerOptions": {
+    "strict": true,
+    "noEmit": true,
+    "target": "es6",
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "allowJs": true,
+    "experimentalDecorators": true,
+    "jsx": "preserve",
+    "keyofStringsOnly": true,
+    "resolveJsonModule": true
+  }
 }
 ```
 
