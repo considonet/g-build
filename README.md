@@ -129,7 +129,7 @@ New setting introduced in 4.0, replacing `autoprefixer`, `postcssPresetEnv` and 
 
 Default: `false` (feature disabled).
 
-We recommend to use [postcss-preset-env](https://github.com/csstools/postcss-preset-env) with [autoprefixer](https://github.com/postcss/autoprefixer) configuration. Additionally [PostCSS Flexbugs Fixes](https://github.com/luisrudge/postcss-flexbugs-fixes) can be applied to make the cross-browser CSS development easier.
+For our projects we usually use [postcss-preset-env](https://github.com/csstools/postcss-preset-env) with [autoprefixer](https://github.com/postcss/autoprefixer) configuration. Additionally [PostCSS Flexbugs Fixes](https://github.com/luisrudge/postcss-flexbugs-fixes) can be applied to make the cross-browser CSS development easier. See [PostCSS Configuration](#postcss-configuration) for more details.
 
 #### `webpSupport`
 This key enables [WebP](https://developers.google.com/speed/webp/) support in your project. This can dramatically increase your website performance on Chrome, Firefox and Android devices. The feature includes automatic image conversion and CSS rewriting to support older browsers. The goal is to keep it seamless - the developer has to prepare image assets like before. Then they'll get converted and a corresponding CSS syntax will be generated during the build and serve processes.
@@ -249,8 +249,8 @@ Default `php` setting is `false`. This setting can be overridden with `browsersy
 
 ##### `lint`
 Specifies whether the code should be linted. This supports the following settings:
-- `js` - if set to `true` `tslint` will run to check compiled `.ts` and `.js` files. These also include all the variants such as `.vue` or `.jsx` files. `tslint.json` config file has to be placed in the same directory as `package.json`. Default: `true` (it was not possible to disable it before version 2.4).
-- `scss` - if set to `true` `stylelint` will run to check your SCSS files. The rules for `stylelint` should be defined in `.stylelintrc` file (all formats are supported) in the same directory as `package.json` file, according to the [documentation](https://stylelint.io/user-guide/configuration/). If the linting fails, the code still remains compiled. For compatibility reasons the default for version 2.x and 3.x is `false`. It will be `true` by default starting from G-Build 4.0.
+- `js` - if set to `true` `eslint` will run to check compiled `.ts` and `.js` files. These also include all the variants such as `.vue` or `.jsx` files. ESLint config file has to be placed in the same directory as `package.json`. Default: `false` (it was not possible to disable it before version 2.4; also prior to version 4.0 the default value was `true`).
+- `scss` - if set to `true` `stylelint` will run to check your SCSS files. The rules for `stylelint` should be defined in Stylelint configuration (all formats are supported) in the same directory as `package.json` file, according to the [documentation](https://stylelint.io/user-guide/configuration/). If the linting fails, the code still remains compiled. Default: `false`
 
 ##### `optimizeAssets`
 Feature since 2.4. Specifies whether during the production build the image assets should be optimized (losslessly compressed). This is should be harmless for any files. Optimization is done using `imagemin` and applies to GIF, JPEG, PNG and SVG files. Default is `true`.
@@ -315,7 +315,7 @@ TypeScript compiler configuration file. The following settings are considered as
      "sourceMap": true,
      "experimentalDecorators": true,
      "jsx": "preserve",
-     "resolveJsonModule": true
+     "resolveJsonModule": true,
    }
 }
 ```
@@ -328,7 +328,7 @@ Starting from G-Build 4.0 `targetBrowsers` config key is not supported. Please f
 
 Starting from G-Build 4.0 `webpack.coreJsVersion` and `webpack.usagePolyfills` settings are removed from the G-Build config file and are no longer supported. Instead please use [Babel configuration](https://babeljs.io/docs/en/configuration) to handle all the settings related to JS and TS transpilation).
 
-To maintain compatibility with the setup of G-Build prior to version 4.0 we have prepared a dedicated Babel preset (`npm install` or `yarn` `@considonet/babel-preset-typescript`) that has to be installed as a project dev dependency. Then the following Babel setting should be sufficient:
+To maintain compatibility with the setup of G-Build prior to version 4.0 we have prepared a dedicated Babel preset (`@considonet/babel-preset-typescript`) that has to be installed as a project dev dependency. Then the following Babel setting should be sufficient:
 
 ```json
 {
@@ -338,12 +338,12 @@ To maintain compatibility with the setup of G-Build prior to version 4.0 we have
 
 Make sure to have all the dependencies installed, including `@babel/core` itself. G-Build supports Babel 7 and newer. 
 
-#### ESLint configuration
+#### ESLint configuration (optional, required when code linting enabled)
 
 Starting from G-Build 4.0 `eslint` is again used to lint the code, this time also for TypeScript.
 To properly handle TypeScript files, please refer to [TypeScript ESLint project docs](https://github.com/typescript-eslint/typescript-eslint). You can prepare an `.eslintrc.js` file or provide the settings via `eslint` key of package.json. ESLint configuration is not required when `lint.js` is set to `false`.
 
-### PostCSS configuration
+### PostCSS configuration (optional, required when postcss enabled)
 
 Starting from G-Build 4.0, no additional (S)CSS processing is done (except WebP prefixing) and therefore there is no longer `autoprefixer` and `postcssPresetEnv` setup.
 
@@ -363,14 +363,19 @@ module.exports = ctx => ({
 })
 ```
 
-To retain compatibility with the setup of G-Build prior to version 4.0 we have prepared a dedicated config package (TBA) that has to be installed as project dev dependency. Then the following Babel setting should be sufficient:
+To retain compatibility with the setup of G-Build prior to version 4.0 we have prepared a dedicated config package (`@considonet/postcss-config`) that has to be installed as project dev dependency. Then the following Babel setting should be sufficient:
 
 ```javascript
-TBA
+module.exports = {
+  plugins: [ require("@considonet/postcss-config")({ normalize: false }) ]
+}
 ```
 
-#### Optional configuration file: `.stylelintrc`
-`stylelint` configuration file. Customized depending on your personal preferences. Not required when `lint.scss` is set to `false`.
+Removing `normalize: false` setting will forcibly prepend `normalize.css` with settings optimized for chosen BrowsersList configuration.
+
+#### Stylelint configuration (optional, required when style linting enabled)
+
+Please follow original [Stylelint documentation](https://stylelint.io/user-guide/configuration). Usually saved as `.stylelintrc` file or as as `stylelint` section in package.json. Not required when `lint.scss` is set to `false`.
 
 ## FAQ
 

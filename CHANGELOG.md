@@ -7,7 +7,8 @@ __4.0.0__ (TBD)
 * Breaking change: `webpack.extractRuntime` setting dropped. To mimic this behaviour a named chunk syntax has to be used in the polyfill/runtime imports (in case of not using Babel's usage-based polyfilling).
 * Breaking change: Switch back to `eslint` for both JS and TS files.
 * Potentially breaking change: Switch from `node-sass` to [now recommended](https://sass-lang.com/dart-sass) compiler of SCSS - Dart Sass ([`sass`](https://www.npmjs.com/package/sass))
-* Breaking change: G-Build no-longer provides PostCSS plugins and no configuration is provided there. Please use official PostCSS config files to add your processors. To retain compatibility with previous G-Build versions, use TBD.
+* Breaking change: G-Build no-longer provides PostCSS plugins and no configuration is provided there. Please use official PostCSS config files to add your processors. To retain compatibility with previous G-Build versions, use `@considonet/postcss-config` with `normalize: false`.
+* Breaking change: JS linting by default is now disabled to make the initial project setup easier
 * Dependencies upgrade
 
 __3.1.1__ (2019/06/24)
