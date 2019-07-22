@@ -27,15 +27,15 @@ Please refer to the configuration manual below for more details. Each of these 4
 - 5-minutes configuration
 
 ### JavaScript and related tasks
-- ES6 to ES5 transpilation using `babel`
+- ES6/TS to ES5 transpilation using `babel`
 - JS modules support with highly optimized `webpack` configuration
 - Microsoft TypeScript 3.x support
 - React.js support (supporting JSX and TSX)
-- Vue.js support (including TypeScript support and `vue-class-component` syntax)
+- Vue.js support (including TypeScript support, decorators and `vue-class-component` syntax)
 - JS/TS code linting using `eslint`
 
 ### CSS, image assets and related tasks
-- SCSS compilation with a custom smart module importer (more powerful than the default `node-sass` and `webpack` SCSS compilers - incl. support for `sass-eyeglass` module syntax).
+- SCSS compilation using the latest `dart-sass` compiler, with a custom smart module importer (more powerful than the default `node-sass` / `dart-sass` and `webpack` SCSS compilers - incl. support for `sass-eyeglass` module syntax).
 - CSS autoprefixing and next-generation features polyfills using `postcss-preset-env` (which itself includes `autoprefixer`)
 - Smart CSS minification using `cssnano`
 - Optional seamless WebP image assets conversion (including CSS rewrites and non-compatible browsers support)
