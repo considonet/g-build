@@ -6,6 +6,7 @@ __4.0.0__ (TBD)
 * Breaking change: Because of the above, `webpack.usagePolyfills` setting is dropped and no polyfills are added by default. If you would like to use the old, static polyfilling solution, import `core-js/stable` and `regenerator-runtime/runtime` to your main JS entry point.
 * Breaking change: `webpack.extractRuntime` setting dropped. To mimic this behaviour a named chunk syntax has to be used in the polyfill/runtime imports (in case of not using Babel's usage-based polyfilling).
 * Breaking change: Switch back to `eslint` for both JS and TS files.
+* Potentially breaking change: Switch from `node-sass` to [now recommended](https://sass-lang.com/dart-sass) compiler of SCSS - Dart Sass ([`sass`](https://www.npmjs.com/package/sass))
 * Dependencies upgrade
 
 __3.1.1__ (2019/06/24)
