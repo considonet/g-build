@@ -1,5 +1,5 @@
 ## Changelog
-__4.0.0__ (TBD)
+__4.0.0__ (2019/07/24)
 * Potentially breaking change: TypeScript files compilation now done via `babel`. The transition should be as seamless as possible and no changes should be done to the existing projects.
 * Breaking change: `typescript` now an optional peer dependency
 * Breaking change: Babel configuration now moved to the official config file or section in package.json. Thanks to this it can be used with other tools relying on `@babel/*` packages (such as `jest`). To retain compatibility with previous G-Build versions, use our `@considonet/babel-preset-typescript` package as your Babel preset.
