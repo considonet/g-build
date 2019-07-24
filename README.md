@@ -12,6 +12,8 @@ You might say that there is no need for such tool - we all can configure `webpac
 
 G-Build was created as an internal tool to be used in all the projects done by our software studio. The goal is to keep the configuration simple and unified across all projects without the need of copying-and-pasting the webpack and gulp config files. This approach allowed us to keep the same building environment in all our projects (PHP- and Microsoft .NET-based), support modern JavaScript and TypeScript and gradually introduce support for the cutting-edge front-end technologies. You are also welcome to contribute in this project (since version 2.2.1 G-Build is available on GitHub).
 
+Starting from version 4.0 the philosophy of this tool changed a bit. Now G-Build tries to provide an optimized and stable environment but leaves the final configuration to the developer. So `babel`, `postcss` and linters are now project-specific and default configs (mimicking previous G-Build behavior) are available as separate packages.
+
 G-Build considers your front-end solution to be organized into several directories:
 - JS (files such as .js, .ts, .jsx, .vue etc.)
 - Styles (SCSS/CSS files)
@@ -45,6 +47,13 @@ Please refer to the configuration manual below for more details. Each of these 4
 - EJS template compilation
 - Pre-configured `browser-sync`-based live-reload HTTP server and proxy supporting both PHP and Microsoft .NET projects and allowing to do CORS calls (`Access-Control-Allow-Origin`)
 - Integrated PHP server support (if `php-cli` available)
+
+### Suggested opinionated packages to work with
+
+These packages are providing setup similar to G-Build versions prior to 4.0.
+
+- [`@considonet/babel-preset-typescript`](https://www.npmjs.com/package/@considonet/babel-preset-typescript) - provides ES6/TS to ES5 transpilation with usage-based polyfills
+- [`@considonet/postcss-config`](https://www.npmjs.com/package/@considonet/postcss-config) - provides G-Build 3.x-like CSS processing and minification
 
 ## Usage
 
