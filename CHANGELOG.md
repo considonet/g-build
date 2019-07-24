@@ -9,6 +9,9 @@ __4.0.0__ (TBD)
 * Potentially breaking change: Switch from `node-sass` to [now recommended](https://sass-lang.com/dart-sass) compiler of SCSS - Dart Sass ([`sass`](https://www.npmjs.com/package/sass))
 * Breaking change: G-Build no-longer provides PostCSS plugins and no configuration is provided there. Please use official PostCSS config files to add your processors. To retain compatibility with previous G-Build versions, use `@considonet/postcss-config` with `normalize: false`.
 * Breaking change: JS linting by default is now disabled to make the initial project setup easier
+* Breaking change: `eslint`, `stylelint`, `@babel/core`, `postcss` are now peer dependencies and have to be installed manually. This solves a lot of issues with linters not being detected. Moreover package managers don't throw warnings when configs are installed.
+* Breaking fix: `vue-template-compiler` now really a peer dependency (before it was mistakenly set to optional dep)
+* Bugfixes
 * Dependencies upgrade
 
 __3.1.1__ (2019/06/24)

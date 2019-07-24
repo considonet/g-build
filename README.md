@@ -379,10 +379,6 @@ Please follow original [Stylelint documentation](https://stylelint.io/user-guide
 
 ## FAQ
 
-__Why is my WebStorm/PhpStorm/Rider not linting the code?__
-
-This is because `tslint` package is included inside G-Build's `package.json` and is not detected by JetBrains' software by default. To use `tslint` inside your IDE, please set manually the path to `tslint` pointing to the proper directory inside your project's `node_modules` directory.
-
 __How to be able to import .vue files into TypeScript files?__
 
 TypeScript needs to be informed that exports from .vue files are of type `Vue`. Because .vue files are imported and transpiled using `vue-loader`, the type declarations don't exist in the transpiled .js file. In this case please create a so-called shim file (usually we keep it in `/shims/vue.d.ts`) containing:
