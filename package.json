@@ -25,7 +25,7 @@
   "dependencies": {
     "@considonet/g-fontasticbundler": "^1.2.1",
     "@considonet/g-logger": "^1.1.1",
-    "@considonet/g-scssimporter": "^1.1.1",
+    "@considonet/g-scssimporter": "^1.2.0",
     "babel-loader": "^8.0.6",
     "browser-sync": "^2.26.7",
     "browser-sync-spa": "^1.0.3",

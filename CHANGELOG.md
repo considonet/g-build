@@ -11,6 +11,7 @@ __4.0.0__ (TBD)
 * Breaking change: JS linting by default is now disabled to make the initial project setup easier
 * Breaking change: `eslint`, `stylelint`, `@babel/core`, `postcss` are now peer dependencies and have to be installed manually. This solves a lot of issues with linters not being detected. Moreover package managers don't throw warnings when configs are installed.
 * Breaking fix: `vue-template-compiler` now really a peer dependency (before it was mistakenly set to optional dep)
+* SCSS update which allows to import JS and JSON files to SCSS. Because it's an external package, this update is also available for older versions of G-Build.
 * Bugfixes
 * Dependencies upgrade
 
