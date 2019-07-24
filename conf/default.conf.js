@@ -15,9 +15,7 @@ module.exports = {
 
   },
 
-  autoprefixer: null,
-  postcssPresetEnv: {},
-  flexbugs: {},
+  postcss: false,
 
   browsersync: {
     spa: false,
@@ -29,12 +27,8 @@ module.exports = {
   },
 
   webpack: {
-    hardSourceCache: false,
     enableBundleAnalyzerServer: false,
-    extractRuntime: false,
     extractModules: false,
-    usagePolyfills: true,
-    coreJsVersion: 3,
     modules: {
       externals: {},
       alias: {}
@@ -42,12 +36,9 @@ module.exports = {
   },
 
   lint: {
-    js: true,
+    js: false,
     scss: false
   },
-
-  // TODO: remove in 4.x
-  targetBrowsers: false,
 
   fontastic: {},
 	

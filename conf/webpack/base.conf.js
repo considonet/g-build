@@ -7,34 +7,6 @@ const ForkTsCheckerNotifierWebpackPlugin = require('fork-ts-checker-notifier-web
 const WebpackNotifierPlugin = require('webpack-notifier');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
-const babelPresetEnvConfig = {
-  "modules": false
-};
-
-// TODO: remove in 4.x
-if(config.targetBrowsers !== false) {
-  babelPresetEnvConfig.targets = { browsers: config.targetBrowsers }
-}
-
-if(config.webpack.usagePolyfills) {
-  babelPresetEnvConfig.useBuiltIns = "usage";
-  babelPresetEnvConfig.corejs = config.webpack.coreJsVersion;
-}
-
-const babelConfig = {
-  "plugins": [
-    "@babel/plugin-proposal-object-rest-spread",
-    "@babel/plugin-syntax-dynamic-import"
-  ],
-  "presets": [
-    [
-      "@babel/preset-env",
-      babelPresetEnvConfig
-    ],
-    "@babel/preset-react"
-  ]
-};
-
 const splitChunks = {
   automaticNameDelimiter: ".",
   minSize: 0,
@@ -58,100 +30,34 @@ const splitChunks = {
 
 const entries = {};
 
-if(config.webpack.extractRuntime) {
+Object.keys(config.jsEntries).forEach(appFile => {
+  entries[config.jsEntries[appFile]] = [path.join(process.cwd(), config.paths.input.js, appFile)]
+});
 
-  if(config.webpack.usagePolyfills) {
-    entries[config.webpack.extractRuntime] = [];
-  } else {
-    entries[config.webpack.extractRuntime] = ["core-js/stable", "regenerator-runtime/runtime"];
-  }
-
-  Object.keys(config.jsEntries).forEach(appFile => {
-    entries[config.jsEntries[appFile]] = [path.join(process.cwd(), config.paths.input.js, appFile)]
-  });
-
-  splitChunks.cacheGroups.vendors.chunks = chunk => config.webpack.extractModules && chunk.name !== config.webpack.extractRuntime;
-
-} else {
-
-  if(config.webpack.usagePolyfills) {
-
-    Object.keys(config.jsEntries).forEach(appFile => {
-      entries[config.jsEntries[appFile]] = [path.join(process.cwd(), config.paths.input.js, appFile)]
-    });
-
-  } else {
-
-    Object.keys(config.jsEntries).forEach(appFile => {
-      entries[config.jsEntries[appFile]] = ["core-js/stable", "regenerator-runtime/runtime", path.join(process.cwd(), config.paths.input.js, appFile)]
-    });
-
-  }
-
-  if(config.webpack.extractModules) {
-    splitChunks.cacheGroups.vendors.chunks = "all";
-  }
-
+if(config.webpack.extractModules) {
+  splitChunks.cacheGroups.vendors.chunks = "all";
 }
 
 const rules = [
-  {
-    test: /\.tsx?$/,
-    exclude: file => (
-      /node_modules/.test(file) &&
-      !/\.vue\.js/.test(file)
-    ),
-    use: [
-      {
-        loader: 'babel-loader',
-        options: babelConfig
-      },
-      {
-        loader: 'ts-loader',
-        options: {
-          transpileOnly: true,
-          appendTsSuffixTo: [/\.vue$/]
-        }
-      }
-    ]
-  },
   {
     test: /\.json5$/,
     loader: 'json5-loader'
   },
   {
-    test: /\.jsx?$/,
+    test: /\.[jt]sx?$/,
     exclude: file => (
-      /node_modules/.test(file) &&
-      !/\.vue\.js/.test(file)
+      /node_modules/.test(file)
     ),
-    loader: 'babel-loader',
-    options: babelConfig
+    use: config.lint.js ? ["babel-loader", "eslint-loader"] : ["babel-loader"]
   }
 ];
 
-if(config.lint.js) {
-  rules.push({
-    test: /\.js$/,
-    exclude: /node_modules/,
-    oneOf: [
-      {
-        resourceQuery: /^\?vue/,
-        loader: 'tslint-loader',
-        options: {}
-      },
-      {
-        loader: 'tslint-loader',
-        enforce: 'pre',
-        options: {}
-      }
-    ]
-  });
-}
-
 rules.push({
   test: /\.vue$/,
-  loader: 'vue-loader'
+  loader: "vue-loader",
+  options: {
+    prettify: false
+  }
 });
 
 module.exports = () => ({
@@ -168,10 +74,10 @@ module.exports = () => ({
 
     const plugins = [];
     plugins.push(new VueLoaderPlugin());
+
     plugins.push(new ForkTsCheckerWebpackPlugin({
       async: true,
       silent: false,
-      tslint: config.lint.js,
       vue: true
     }));
 
