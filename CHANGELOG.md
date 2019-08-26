@@ -1,5 +1,5 @@
 ## Changelog
-__TBA__
+__4.1.0__ (2019/08/26)
 * Dependencies upgrade, in particular `eslint` peer dependency now allows to use version 6
 
 __4.0.0__ (2019/07/24)
