@@ -1,4 +1,7 @@
 ## Changelog
+__4.1.0__ (2019/08/26)
+* Dependencies upgrade, in particular `eslint` peer dependency now allows to use version 6
+
 __4.0.0__ (2019/07/24)
 * Potentially breaking change: TypeScript files compilation now done via `babel`. The transition should be as seamless as possible and no changes should be done to the existing projects.
 * Breaking change: `typescript` now an optional peer dependency
