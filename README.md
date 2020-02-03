@@ -3,7 +3,7 @@
 
 Licence: MIT
 
-Copyright (C) 2017-2019 Paweł Gabryelewicz | www.considonet.com
+Copyright (C) 2017-2020 Paweł Gabryelewicz | www.considonet.com
 
 ## What is G-Build?
 G-Build is a front-end building automation tool build on top of `webpack` and `gulp`. It works in a similar way to scaffolds done with tools such as `@vue/cli`.

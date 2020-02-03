@@ -1,4 +1,7 @@
 ## Changelog
+__4.1.1__ (2020/02/03)
+* Canary build - dependencies upgrade and cleanup
+
 __4.1.0__ (2019/08/26)
 * Dependencies upgrade, in particular `eslint` peer dependency now allows to use version 6
 
